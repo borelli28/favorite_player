@@ -14,9 +14,9 @@ export default () => {
           <label for="password">Password</label>
           <input type="password" name="password" required/>
 
-          <button className="btn btn-primary" type="submit" >Login</button>
+          <button className="btn btn-primary" type="submit"> Login </button>
         </form>
-        <a href="#">Or Sign Up Here</a>
+        <a href="/register">or Register Here</a>
       </main>
     </div>
   )
