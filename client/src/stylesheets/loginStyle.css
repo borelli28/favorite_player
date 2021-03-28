@@ -1,0 +1,31 @@
+/* * {
+  outline: 1px dashed red;
+} */
+
+#main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+main {
+  display: block;
+  text-align: center;
+  margin: 5% 2%;
+}
+
+main form {
+  display: block;
+}
+
+form input {
+  /* margin-right: 5%; */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+form button {
+  margin: 5% 0;
+  width: 75%;
+}
