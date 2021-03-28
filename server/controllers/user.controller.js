@@ -8,20 +8,20 @@ module.exports.index = (request, response) => {
 module.exports.createUser = (request, response) => {
     const { email, password } = request.body;
     User.create({
-        firstName,
-        lastName
+        email,
+        password
     })
-        .then(person => response.json(person))
+        .then(user => response.json(user))
         .catch(err => response.json(err));
 }
 module.exports.getAllUser = (request, response) => {
     User.find({})
-        .then(persons => response.json(persons))
+        .then(user => response.json(user))
         .catch(err => response.json(err))
 }
 module.exports.getUser = (request, response) => {
     User.findOne({_id:request.params.id})
-        .then(person => response.json(person))
+        .then(user => response.json(user))
         .catch(err => response.json(err))
 }
 module.exports.updateUser = (request, response) => {
