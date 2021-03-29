@@ -1,0 +1,20 @@
+/* * {
+  outline: 1px dashed red;
+} */
+
+div {
+  width: 100%;
+}
+
+#player-name {
+  margin-top: 3%;
+}
+
+#table-container {
+  display: flex;
+  justify-content: center;
+}
+
+  #table-container #table {
+      width: 80%;
+    }
