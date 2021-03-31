@@ -19,9 +19,10 @@ export default props => {
         console.log("Response:");
         console.log(res.data.sport_hitting_tm.queryResults.row);
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
+        setPlayerInfo({name:name, position:pos})
+        navigate("/addPlayer/3");
       })
       .catch(err => console.log(err))
-    navigate("/addPlayer/3");
   }
 
   return (

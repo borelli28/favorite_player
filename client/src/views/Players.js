@@ -11,12 +11,12 @@ export default () => {
   const getSome = () => {
     axios.get('http://localhost:8000/api/user')
       .then(res => {
-        setPlayers(res);
-        console.log("my players:")
-        console.log(res);
+        setPlayers(res.data);
       })
       .catch(err => console.log(err));
   }
+  console.log("my player:")
+  console.log(players)
 
   const addPlayer = () => {
     navigate("/addPlayer/1");
