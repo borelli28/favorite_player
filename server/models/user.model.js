@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-    email: { type: String, required: [true, "Email is required"], minLength: [5, "Email should be at least 5 characters"], validate: { validator: val => /^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(val), message: "Please enter a valid email" } },
-    password: { type: String, required: [true, "Password is required"], minLength: [8, "Password should be at least 8 characters long"] },
-    fav_players: [{ name: { type: String }, info: { type: String } }],
-    oneFavPlayer: { name: { type: String }, info: { type: String } }
+  email: { type: String, required: [true, "Email is required"], minLength: [5, "Email should be at least 5 characters"] },
+  password: { type: String, required: [true, "Password is required"], minLength: [8, "Password should be at least 8 characters long"] },
+  // favPlayers: { stats: { type: Object}, name: { type: String } },
+  favPlayers: { type: Object },
+  oneFavPlayer: { type: Object }
 }, { timestamps: true });
 
 UserSchema.virtual('confirmPassword')

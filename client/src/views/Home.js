@@ -1,8 +1,18 @@
 import '../stylesheets/homeStyle.css';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
+import axios from 'axios';
 
 export default props => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(()=>{
+    axios.get('http://localhost:8000/api/user')
+      .then(res=>{
+        console.log(res.data)
+        setUsers(res.data);
+      });
+  },[])
 
   return (
     <div>
@@ -36,6 +46,11 @@ export default props => {
           </tbody>
         </table>
       </div>
+      {
+        users.map((user, idx) => {
+          return <h3 key={idx}>User Email: { user.email }, User id: { user._id }</h3>
+        })
+      }
     </div>
   )
 
