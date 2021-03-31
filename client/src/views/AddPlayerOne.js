@@ -9,12 +9,12 @@ export default props => {
   const submitHandler = (event) => {
     event.preventDefault();
     axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam?sport_code='mlb'&active_sw='Y'&name_part='${tempName}%25'`)
-     .then(res => {
-       console.log(res.data.search_player_all.queryResults.row);
-       setPlayerInfo(res.data.search_player_all.queryResults.row);
-       navigate("/addPlayer/2");
+      .then(res => {
+        console.log(res.data.search_player_all.queryResults.row);
+        setPlayerInfo(res.data.search_player_all.queryResults.row);
+        navigate("/addPlayer/2");
      })
-     .catch(err => console.log(err))
+      .catch(err => console.log(err))
   }
 
   return (

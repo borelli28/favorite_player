@@ -4,8 +4,7 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: [true, "Email is required"], minLength: [5, "Email should be at least 5 characters"] },
   password: { type: String, required: [true, "Password is required"], minLength: [8, "Password should be at least 8 characters long"] },
-  // favPlayers: { stats: { type: Object}, name: { type: String } },
-  favPlayers: { type: Object },
+  favPlayers: { favStats: { type: Object}, favInfo: { type: Object } },
   oneFavPlayer: { type: Object }
 }, { timestamps: true });
 

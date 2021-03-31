@@ -21,8 +21,8 @@ function App() {
         <Home path="/home" />
         <Players path="/favorite_players" />
         <AddPlayerOne path="/addPlayer/1" playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
-        <AddPlayerTwo path="/addPlayer/2" playerPick={playerStats} setPlayerPick={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
-        <AddPlayerThree path="/addPlayer/3" playerPick={playerStats} setPlayerPick={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
+        <AddPlayerTwo path="/addPlayer/2" playerStats={playerStats} setPlayerStats={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
+        <AddPlayerThree path="/addPlayer/3" playerStats={playerStats} playerInfo={playerInfo}/>
       </Router>
     </div>
   );
