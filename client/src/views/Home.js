@@ -5,19 +5,22 @@ import axios from 'axios';
 
 export default props => {
   const [users, setUsers] = useState([]);
+  const [player, setPlayer] = useState([]);
+  const [getBool, setGetBool] = useState(false);
 
   useEffect(()=>{
     axios.get('http://localhost:8000/api/user')
       .then(res=>{
         console.log(res.data)
         setUsers(res.data);
+
       });
   },[])
 
   return (
     <div>
       <Nav />
-      <h1 id="player-name">Mike Trout</h1>
+      <h1 id="player-name">{ users.map((player,idx)=> player.favInfo.name) }</h1>
       <div id="table-container">
         <table className="table table-hover" id="table">
           <thead>
@@ -33,16 +36,25 @@ export default props => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>LAA</td>
-              <td>29</td>
-              <td>CF</td>
-              <td>100</td>
-              <td>30</td>
-              <td>25</td>
-              <td>18</td>
-              <td>7</td>
-            </tr>
+            {
+              (users
+                ? users.map((player, idx) => {
+                  return (
+                    <tr key={idx}>
+                      <td>{ player.favStats.team_full }</td>
+                      <td>Not available</td>
+                      <td>{ player.favInfo.position }</td>
+                      <td>{ player.favStats.ab }</td>
+                      <td>{ player.favStats.h }</td>
+                      <td>{ player.favStats.rbi }</td>
+                      <td>{ player.favStats.r }</td>
+                      <td>{ player.favStats.sb }</td>
+                  </tr>
+                  )
+                })
+              : "NO DATA"
+              )
+            }
           </tbody>
         </table>
       </div>

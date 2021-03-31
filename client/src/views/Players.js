@@ -1,22 +1,26 @@
 import '../stylesheets/playersStyle.css';
-import React, {  useState, useEffect } from 'react';
+import React, {  useState } from 'react';
 import { navigate } from "@reach/router";
 import axios from 'axios';
 import Nav from '../components/Nav';
 
 export default () => {
+  const [player, setPlayer] = useState([]);
+  const [getBool, setGetBool] = useState(false);
 
-  const [players, setPlayers] = useState([]);
-
-  const getSome = () => {
+  if (getBool === false) {
+    console.log("setting getBool to:")
+    setGetBool(true);
+    console.log(!getBool);
     axios.get('http://localhost:8000/api/user')
       .then(res => {
-        setPlayers(res.data);
+        setPlayer(res.data);
       })
       .catch(err => console.log(err));
   }
+
   console.log("my player:")
-  console.log(players)
+  console.log(player)
 
   const addPlayer = () => {
     navigate("/addPlayer/1");
@@ -25,7 +29,6 @@ export default () => {
   return (
     <div>
       <Nav />
-      <button className="btn btn-info" onClick={ getSome }>GET</button>
       <div id="table-container">
         <table className="table table-strip table-hover" id="table">
           <thead>
@@ -37,14 +40,23 @@ export default () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Mike Trout</td>
-              <td>LAA</td>
-              <td>CF</td>
-              <td>
-                <button className="btn btn-danger">Remove</button> <button className="btn btn-warning">Favorite</button>
-              </td>
-            </tr>
+            {
+              (player
+              ? player.map((pl, idx) => {
+                return (
+                  <tr key={idx}>
+                    <td>{pl.favInfo.name}</td>
+                    <td>{pl.favStats.team_full}</td>
+                    <td>{pl.favInfo.position}</td>
+                    <td>
+                      <button className="btn btn-danger">Remove</button> <button className="btn btn-warning">Favorite</button>
+                    </td>
+                  </tr>
+                )
+              })
+              : "No data"
+              )
+            }
           </tbody>
         </table>
       </div>
