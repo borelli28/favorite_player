@@ -19,7 +19,7 @@ export default () => {
   }
 
   const addPlayer = () => {
-    navigate("/addPlayer");
+    navigate("/addPlayer/1");
   }
 
   return (

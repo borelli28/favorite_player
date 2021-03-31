@@ -5,10 +5,13 @@ import Login from './views/Login';
 import Register from './views/Register';
 import Home from './views/Home';
 import Players from './views/Players';
-import AddPlayer from './views/AddPlayer'
+import AddPlayerOne from './views/AddPlayerOne';
+import AddPlayerTwo from './views/AddPlayerTwo';
+import AddPlayerThree from './views/AddPlayerThree';
 
 function App() {
-  const [playerPick, setPlayerPick] = useState("");
+  const [playerStats, setPlayerStats] = useState({});
+  const [playerInfo, setPlayerInfo] = useState({});
 
   return (
     <div className="App">
@@ -17,7 +20,9 @@ function App() {
         <Register path="/register" />
         <Home path="/home" />
         <Players path="/favorite_players" />
-        <AddPlayer path="/addPlayer" playerPick={playerPick} setPlayerPick={setPlayerPick}/>
+        <AddPlayerOne path="/addPlayer/1" playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
+        <AddPlayerTwo path="/addPlayer/2" playerPick={playerStats} setPlayerPick={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
+        <AddPlayerThree path="/addPlayer/3" playerPick={playerStats} setPlayerPick={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
       </Router>
     </div>
   );
