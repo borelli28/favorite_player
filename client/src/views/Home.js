@@ -58,12 +58,12 @@ export default props => {
           </tbody>
         </table>
       </div>
-      {
-        users.map((user, idx) => {
-          return <h3 key={idx}>User Email: { user.email }, User id: { user._id }</h3>
-        })
-      }
     </div>
   )
 
 }
+// {
+//   users.map((user, idx) => {
+//     return <h3 key={idx}>User Email: { user.email }, User id: { user._id }</h3>
+//   })
+// }

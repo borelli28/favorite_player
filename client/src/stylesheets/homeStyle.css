@@ -1,9 +1,13 @@
 /* * {
   outline: 1px dashed red;
 } */
+html {
+  background-color: #00A3E0;
+}
 
 div {
   width: 100%;
+  background-color: #00A3E0;
 }
 
 #player-name {
@@ -13,6 +17,7 @@ div {
 #table-container {
   display: flex;
   justify-content: center;
+  background-color: white;
 }
 
   #table-container #table {

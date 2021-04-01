@@ -6,12 +6,10 @@ module.exports.index = (request, response) => {
   });
 }
 module.exports.createUser = (request, response) => {
-  const { email, password } = request.body;
-  User.create({
-    email,
-    password
-  })
-    .then(user => response.json(user))
+  User.create(request.body)
+    .then(user => {
+        response.json({ msg: "success!", user: user });
+    })
     .catch(err => response.json(err));
 }
 module.exports.getAllUser = (request, response) => {

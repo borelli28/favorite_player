@@ -1,0 +1,23 @@
+/* * {
+  outline: 1px dashed red;
+} */
+
+#info {
+  margin-top: 5%;
+  color: white;
+}
+
+#form-container {
+  display: flex;
+  justify-content: center;
+}
+
+#manual-form {
+  text-align: center;
+  display: block;
+  width: 50%;
+}
+
+  #manual-form #add-player-btn {
+    color: #00A3E0;
+  }

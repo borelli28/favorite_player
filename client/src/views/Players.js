@@ -9,9 +9,9 @@ export default () => {
   const [getBool, setGetBool] = useState(false);
 
   if (getBool === false) {
-    console.log("setting getBool to:")
+    // console.log("setting getBool to:")
     setGetBool(true);
-    console.log(!getBool);
+    // console.log(!getBool);
     axios.get('http://localhost:8000/api/user')
       .then(res => {
         setPlayer(res.data);
@@ -60,7 +60,7 @@ export default () => {
           </tbody>
         </table>
       </div>
-      <button className="btn btn-primary" type="button" id="add-player-btn" onClick={ addPlayer }>Add Player</button>
+      <button className="btn btn-light" type="button" id="add-player-btn" onClick={ addPlayer }>Add Player</button>
     </div>
   )
 

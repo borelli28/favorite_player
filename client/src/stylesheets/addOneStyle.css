@@ -1,0 +1,26 @@
+/* * {
+  outline: 1px dashed red;
+} */
+
+#container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+form {
+  margin: 5%;
+}
+
+label {
+  color: white;
+}
+
+input {
+  width: 100%;
+  text-align: center;
+}
+
+#search-btn {
+  color: #00A3E0;
+}
