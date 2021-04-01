@@ -1,6 +1,7 @@
 import '../stylesheets/loginStyle.css';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { navigate } from "@reach/router";
 
 export default () => {
   //Create an array to store errors from the API
@@ -18,6 +19,10 @@ export default () => {
     })
     .then(res => {
       console.log(res);
+      if (response.data) {
+        console.log('Succesful signup');
+        navigate('/home')
+      }
     })
     .catch(err => {
       const errorResponse = err.response.data.errors; // Get the errors from err.response.data
@@ -35,7 +40,7 @@ export default () => {
       {
         errors.map((err, index) => <p key={index}>{err}</p>)
       }
-      <main>
+      <main onSubmit={ onSubmitHandler }>
         <h2> Register </h2>
         <form>
           <label for="email"> Email </label>
@@ -47,7 +52,7 @@ export default () => {
           <label for="confirmPassword"> Confirm Password </label>
           <input type="password" name="confirmPassword" onChange={(event) => { setConfirmPassword(event.target.value) }} required/>
 
-          <button className="btn btn-primary" type="submit" onClick={ onSubmitHandler }> Submit </button>
+          <button className="btn btn-primary" type="submit"> Submit </button>
         </form>
       </main>
     </div>

@@ -16,7 +16,7 @@ export default props => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2020'&player_id='${id}'`)
+    axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
       .then(res => {
         // console.log("Response:");
         // console.log(res.data.sport_hitting_tm.queryResults.row);
