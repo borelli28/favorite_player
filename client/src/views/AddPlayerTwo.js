@@ -7,10 +7,10 @@ import Nav from '../components/Nav';
 export default props => {
   const { playerInfo, setPlayerInfo } = props;
   const { playerStats, setPlayerStats } = props;
+  const {id, setId} = props;
   // Selected player, Full name, Position & ID
   const [name, setName] = useState("");
   const [pos, setPos] = useState("");
-  const [id, setId] = useState("");
 
   // console.log(playerInfo);
 
@@ -21,7 +21,7 @@ export default props => {
         // console.log("Response:");
         // console.log(res.data.sport_hitting_tm.queryResults.row);
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
-        setPlayerInfo({name:name, position:pos})
+        setPlayerInfo({name:name, position:pos, id:id})
         navigate("/addPlayer/3");
       })
       .catch(err => console.log(err))

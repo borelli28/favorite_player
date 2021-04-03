@@ -8,18 +8,35 @@ export default props => {
   const [player, setPlayer] = useState([]);
   const [getBool, setGetBool] = useState(false);
 
+  const {id, setId} = props;
+  const { playerInfo, setPlayerInfo } = props;
+  const { playerStats, setPlayerStats } = props;
+
   useEffect(()=>{
     axios.get('http://localhost:8000/api/user')
       .then(res=>{
         console.log(res.data)
         setUsers(res.data);
-
+        // get player id from favInfo
+        setId(res.data[0].favInfo.id)
       });
   },[])
+
+  // request player stats using player id in favInfo
+  const refreshHandler = (event) => {
+    event.preventDefault();
+    axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
+      .then(res => {
+        setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
+        console.log("New stats requested")
+      })
+      .catch(err => console.log(err))
+  }
 
   return (
     <div>
       <Nav />
+      <button className="btn btn-light" onClick={ refreshHandler }>Refresh</button>
       <h1 id="player-name">{ users.map((player,idx)=> player.favInfo.name) }</h1>
       <div id="table-container">
         <table className="table table-hover" id="table">
