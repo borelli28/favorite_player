@@ -25,12 +25,21 @@ export default props => {
   // request player stats using player id in favInfo
   const refreshHandler = (event) => {
     event.preventDefault();
+    // ask for the new data and assign the response to playerStats
     axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
       .then(res => {
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
-        console.log("New stats requested")
+        console.log("player stats");
+        console.log(playerStats);
+        console.log("New stats requested");
+
       })
       .catch(err => console.log(err))
+    // update favStats using the playerStats data
+    axios.put('http://localhost:8000/api/user/60641892ec24325f9f30eccc/update', {
+      favStats: playerStats
+    })
+      .then(res => console.log(res));
   }
 
   return (
