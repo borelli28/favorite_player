@@ -39,6 +39,7 @@ export default props => {
               <th>Team</th>
               <th>Player ID</th>
               <th>Roster Name (Jersey Name)</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -52,6 +53,13 @@ export default props => {
                   <td>{player.team_full}</td>
                   <td>{player.player_id}</td>
                   <td>{player.name_display_roster}</td>
+                  <td>
+                    <form onSubmit={ submitHandler } >
+                      <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(player.name_display_first_last);
+                      setPos(player.position);
+                    setId(player.player_id); }}>Add Player</button>
+                    </form>
+                  </td>
                 </tr>
               )
             })
@@ -61,27 +69,20 @@ export default props => {
                 <td>{playerInfo.team_full}</td>
                 <td>{playerInfo.player_id}</td>
                 <td>{playerInfo.name_display_roster}</td>
+                <td>
+                  <form onSubmit={ submitHandler } >
+                    <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(playerInfo.name_display_first_last);
+                    setPos(playerInfo.position);
+                  setId(playerInfo.player_id); }}>Add Player</button>
+                  </form>
+                </td>
               </tr>
             )
           }
           </tbody>
         </table>
       </div>
-      <h3 id="info">Copy/Paste the Information from the table above</h3>
-      <div id="form-container">
-        <form onSubmit={ submitHandler } id="manual-form">
-          <label for="full-name">Full Name:</label>
-          <input type="text" name="full-name" onChange={(event) => { setName(event.target.value) }} required/>
 
-          <label for="pos">Position:</label>
-          <input type="text" name="pos" onChange={(event) => { setPos(event.target.value) }} required/>
-
-          <label for="id">Player ID:</label>
-          <input type="text" name="id" onChange={(event) => { setId(event.target.value) }} required/>
-
-          <button className="btn btn-light" id="add-player-btn">Add Player</button>
-        </form>
-      </div>
     </main>
   )
 

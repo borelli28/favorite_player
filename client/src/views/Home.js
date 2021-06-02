@@ -29,8 +29,6 @@ export default props => {
     axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
       .then(res => {
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
-        console.log("player stats");
-        console.log(playerStats);
         console.log("New stats requested");
 
       })
@@ -45,7 +43,6 @@ export default props => {
   return (
     <div>
       <Nav />
-      <button className="btn btn-light" onClick={ refreshHandler }>Refresh</button>
       <h1 id="player-name">{ users.map((player,idx)=> player.favInfo.name) }</h1>
       <div id="table-container">
         <table className="table table-hover" id="table">
@@ -75,7 +72,7 @@ export default props => {
                       <td>{ player.favStats.rbi }</td>
                       <td>{ player.favStats.r }</td>
                       <td>{ player.favStats.sb }</td>
-                  </tr>
+                    </tr>
                   )
                 })
               : "NO DATA"
@@ -88,8 +85,3 @@ export default props => {
   )
 
 }
-// {
-//   users.map((user, idx) => {
-//     return <h3 key={idx}>User Email: { user.email }, User id: { user._id }</h3>
-//   })
-// }
