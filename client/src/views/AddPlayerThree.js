@@ -8,23 +8,9 @@ export default props => {
 
   const [user, setUser] = useState({});
 
-  // console.log("Player Info");
-  // console.log(playerInfo);
-  // console.log("Player Stats");
-  // console.log(playerStats);
-
   useEffect(() => {
-    axios.get('http://localhost:8000/api/user')
-      .then(res => {
-        // console.log(res)
-        setUser(res)
-      })
-  })
-
-  useEffect(() => {
-    axios.put('http://localhost:8000/api/user/60641892ec24325f9f30eccc/update', {
-      email: user.email,
-      password: user.password,
+    axios.post('http://localhost:8000/api/new/player', {
+      id: 1,
       favStats: playerStats,
       favInfo: playerInfo
     })

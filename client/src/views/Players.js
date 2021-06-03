@@ -5,22 +5,17 @@ import axios from 'axios';
 import Nav from '../components/Nav';
 
 export default () => {
-  const [player, setPlayer] = useState([]);
+  const [players, setPlayers] = useState([]);
   const [getBool, setGetBool] = useState(false);
 
   if (getBool === false) {
-    // console.log("setting getBool to:")
     setGetBool(true);
-    // console.log(!getBool);
-    axios.get('http://localhost:8000/api/user')
+    axios.get('http://localhost:8000/api/players')
       .then(res => {
-        setPlayer(res.data);
+        setPlayers(res.data);
       })
       .catch(err => console.log(err));
   }
-
-  console.log("my player:")
-  console.log(player)
 
   const addPlayer = () => {
     navigate("/addPlayer/1");
@@ -41,15 +36,15 @@ export default () => {
           </thead>
           <tbody>
             {
-              (player
-              ? player.map((pl, idx) => {
+              (players
+              ? players.map((player, idx) => {
                 return (
                   <tr key={idx}>
-                    <td>{pl.favInfo.name}</td>
-                    <td>{pl.favStats.team_full}</td>
-                    <td>{pl.favInfo.position}</td>
+                    <td>{player.favInfo.name}</td>
+                    <td>{player.favStats.team_full}</td>
+                    <td>{player.favInfo.position}</td>
                     <td>
-                      <button className="btn btn-danger">Remove</button> <button className="btn btn-warning">Favorite</button>
+                      <button className="btn btn-danger">Remove</button>
                     </td>
                   </tr>
                 )

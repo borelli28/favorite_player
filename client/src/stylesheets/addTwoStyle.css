@@ -12,12 +12,7 @@
   justify-content: center;
 }
 
-#manual-form {
-  text-align: center;
-  display: block;
-  width: 50%;
+form #add-player-btn {
+  color: #00A3E0;
+  width: 100%;
 }
-
-  #manual-form #add-player-btn {
-    color: #00A3E0;
-  }

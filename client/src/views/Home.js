@@ -4,7 +4,7 @@ import Nav from '../components/Nav';
 import axios from 'axios';
 
 export default props => {
-  const [users, setUsers] = useState([]);
+  const [players, setPlayers] = useState([]);
   const [player, setPlayer] = useState([]);
   const [getBool, setGetBool] = useState(false);
 
@@ -13,12 +13,13 @@ export default props => {
   const { playerStats, setPlayerStats } = props;
 
   useEffect(()=>{
-    axios.get('http://localhost:8000/api/user')
+    axios.get('http://localhost:8000/api/players')
       .then(res=>{
+        console.log("res:");
         console.log(res.data)
-        setUsers(res.data);
-        // get player id from favInfo
-        setId(res.data[0].favInfo.id)
+        setPlayers(res.data);
+        // // get player id from favInfo
+        // setId(res.data[0].favInfo.id)
       });
   },[])
 
@@ -39,11 +40,10 @@ export default props => {
     })
       .then(res => console.log(res));
   }
-
   return (
     <div>
       <Nav />
-      <h1 id="player-name">{ users.map((player,idx)=> player.favInfo.name) }</h1>
+      <h1>My Players</h1>
       <div id="table-container">
         <table className="table table-hover" id="table">
           <thead>
@@ -60,8 +60,8 @@ export default props => {
           </thead>
           <tbody>
             {
-              (users
-                ? users.map((player, idx) => {
+              (players
+                ? players.map((player, idx) => {
                   return (
                     <tr key={idx}>
                       <td>{ player.favStats.team_full }</td>
