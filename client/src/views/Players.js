@@ -7,6 +7,8 @@ import Nav from '../components/Nav';
 export default () => {
   const [players, setPlayers] = useState([]);
   const [getBool, setGetBool] = useState(false);
+  // when user clicks on remove button the id of the player is stored here so we can pass it in the route in the request
+  const [idToDelete, setIdToDelete] = useState("");
 
   if (getBool === false) {
     setGetBool(true);
@@ -17,8 +19,19 @@ export default () => {
       .catch(err => console.log(err));
   }
 
+  // redirect to add player page
   const addPlayer = () => {
     navigate("/addPlayer/1");
+  }
+
+  // deletes a player
+  const deletePlayer = () => {
+    // pass the id of the player so it can be deleted
+    axios.delete(`http://localhost:8000/api/player/${idToDelete}/delete`)
+      .then(res => {
+        console.log("Player deleted");
+      })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -44,7 +57,9 @@ export default () => {
                     <td>{player.favStats.team_full}</td>
                     <td>{player.favInfo.position}</td>
                     <td>
-                      <button className="btn btn-danger">Remove</button>
+                      <form onSubmit={ deletePlayer }>
+                        <button type="submit" className="btn btn-danger" onClick={() => setIdToDelete(player._id)}>Remove</button>
+                      </form>
                     </td>
                   </tr>
                 )
