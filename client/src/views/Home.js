@@ -63,9 +63,14 @@ export default props => {
               <th>Position</th>
               <th>AB</th>
               <th>H</th>
+              <th>TB</th>
+              <th>OBP</th>
               <th>RBI</th>
+              <th>SO</th>
               <th>R</th>
+              <th>HR</th>
               <th>SB</th>
+              <th>CS</th>
             </tr>
           </thead>
           <tbody>
@@ -79,9 +84,14 @@ export default props => {
                       <td>{ player.favInfo.position }</td>
                       <td>{ player.favStats.ab }</td>
                       <td>{ player.favStats.h }</td>
+                      <td>{ player.favStats.tb }</td>
+                      <td>{ player.favStats.obp }</td>
                       <td>{ player.favStats.rbi }</td>
+                      <td>{ player.favStats.so }</td>
                       <td>{ player.favStats.r }</td>
+                      <td>{ player.favStats.hr }</td>
                       <td>{ player.favStats.sb }</td>
+                      <td>{ player.favStats.cs }</td>
                     </tr>
                   )
                 })
