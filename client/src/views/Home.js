@@ -40,6 +40,16 @@ export default props => {
     })
       .then(res => console.log(res));
   }
+
+  //  deletes all data in the database
+  const wipeDBClean = () => {
+    axios.delete("http://localhost:8000/api/delete/data")
+      .then(res => {
+        console.log("and is gone.")
+      })
+      .catch(err => console.log("the data could not be deleted: " + err))
+  }
+
   return (
     <div>
       <Nav />
@@ -49,7 +59,7 @@ export default props => {
           <thead>
             <tr>
               <th>Team</th>
-              <th>Age</th>
+              <th>Name</th>
               <th>Position</th>
               <th>AB</th>
               <th>H</th>
@@ -65,7 +75,7 @@ export default props => {
                   return (
                     <tr key={idx}>
                       <td>{ player.favStats.team_full }</td>
-                      <td>Not available</td>
+                      <td>{ player.favInfo.name }</td>
                       <td>{ player.favInfo.position }</td>
                       <td>{ player.favStats.ab }</td>
                       <td>{ player.favStats.h }</td>

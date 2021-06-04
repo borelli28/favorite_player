@@ -1,5 +1,5 @@
 import '../stylesheets/addTwoStyle.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { navigate } from "@reach/router";
 import axios from 'axios';
 import Nav from '../components/Nav';
@@ -12,7 +12,21 @@ export default props => {
   const [name, setName] = useState("");
   const [pos, setPos] = useState("");
 
-  // console.log(playerInfo);
+  //  save player info data in localStorage so if the pages gets refresh
+  // user can still see the data without having to submit another form
+  if (Object.keys(playerInfo).length == undefined || Object.keys(playerInfo).length == 0) {
+
+    useEffect(()=>{
+      const playerPersist = localStorage.getItem("playerInfo")
+      const newPlayerInfo = JSON.parse(playerPersist);
+      setPlayerInfo(newPlayerInfo)
+    },[])
+  } else {
+    useEffect(() => {
+      localStorage.setItem("playerInfo", JSON.stringify(playerInfo))
+      console.log("playerInfo saved in local storage");
+    }, [playerInfo])
+  }
 
   const submitHandler = (event) => {
     event.preventDefault();
