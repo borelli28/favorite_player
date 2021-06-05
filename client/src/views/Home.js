@@ -115,43 +115,42 @@ export default props => {
       </div>
     )
   } else {
+
     return (
-      <div id="mobile">
+      <div id="small-mobile">
         <Nav />
         <h1>My Players</h1>
-        <div id="table-container">
-          <table className="table table-hover" id="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>AB</th>
-                <th>H</th>
-                <th>RBI</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                (players
-                  ? players.map((player, idx) => {
-                    return (
-                      <tr key={idx}>
-                        <td>{ player.favInfo.name }</td>
-                        <td>{ player.favInfo.position }</td>
-                        <td>{ player.favStats.ab }</td>
-                        <td>{ player.favStats.h }</td>
-                        <td>{ player.favStats.rbi }</td>
-                      </tr>
-                    )
-                  })
-                : "NO DATA"
+        <div>
+          {
+            (players
+              ? players.map((player, idx) => {
+                return (
+                  <div key={idx}>
+                    <h4>{player.favInfo.name}</h4>
+                    <ul class="list-group">
+                      <li class="list-group-item">Team: <span>{ player.favStats.team_full }</span></li>
+                      <li class="list-group-item">Position: <span>{ player.favInfo.position }</span></li>
+                      <li class="list-group-item">At Bats: <span>{ player.favStats.ab }</span></li>
+                      <li class="list-group-item">Hits: <span>{ player.favStats.h }</span></li>
+                      <li class="list-group-item">Total Bases: <span>{ player.favStats.tb }</span></li>
+                      <li class="list-group-item">On Base %: <span>{ player.favStats.obp }</span></li>
+                      <li class="list-group-item">Runs Batted In: <span>{ player.favStats.rbi }</span></li>
+                      <li class="list-group-item">Strike Outs: <span>{ player.favStats.so }</span></li>
+                      <li class="list-group-item">Runs: <span>{ player.favStats.r }</span></li>
+                      <li class="list-group-item">Home Runs: <span>{ player.favStats.hr }</span></li>
+                      <li class="list-group-item">Stolen Bases: <span>{ player.favStats.sb }</span></li>
+                      <li class="list-group-item">Caught Stealing: <span>{ player.favStats.cs }</span></li>
+                    </ul>
+                  </div>
                 )
-              }
-            </tbody>
-          </table>
+              })
+            : "NO DATA"
+            )
+          }
         </div>
       </div>
     )
+
   }
 
 

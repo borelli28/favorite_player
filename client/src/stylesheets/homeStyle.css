@@ -30,5 +30,14 @@ div {
 
 /* mobile */
 
-#mobile #table-container {
+#small-mobile span {
+  font-weight: bolder;
+}
+
+#small-mobile h4 {
+  margin: 7% 0 1%;
+  color: #EF3340;
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 5px;
 }
