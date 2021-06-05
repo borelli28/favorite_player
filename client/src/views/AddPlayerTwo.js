@@ -33,7 +33,7 @@ export default props => {
   } else {
     useEffect(() => {
       localStorage.setItem("playerInfo", JSON.stringify(playerInfo))
-      console.log("playerInfo saved in local storage");
+      // console.log("playerInfo saved in local storage");
     }, [playerInfo])
   }
 
@@ -56,7 +56,7 @@ export default props => {
           }
         } catch {
           // the data returned by the API is empty so we redirect to playerNotAvailable page
-          console.log("This Player information is not available at this moment");
+          // console.log("This Player information is not available at this moment");
           navigate("/playerNotAvailable");
         }
       })

@@ -35,7 +35,7 @@ export default props => {
       <span id="valError">{playerNullError}</span>
       <div id="container">
         <form onSubmit={ submitHandler }>
-          <label for="player-name">Enter the Player Jersey Name:</label>
+          <label htmlFor="player-name">Enter the Player Jersey Name:</label>
           <input type="text" name="player-name" placeholder="example: (Trout, Stanton)" onChange={(event) => { setTempName(event.target.value) }} required/>
 
           <button className="btn btn-light" type="submit" id="search-btn">Search</button>

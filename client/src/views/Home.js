@@ -25,11 +25,9 @@ export default props => {
   useEffect(()=>{
     axios.get('http://localhost:8000/api/players')
       .then(res=>{
-        console.log("res:");
-        console.log(res.data)
+        // console.log("res:");
+        // console.log(res.data)
         setPlayers(res.data);
-        // // get player id from favInfo
-        // setId(res.data[0].favInfo.id)
       });
   },[])
 
@@ -44,7 +42,8 @@ export default props => {
 
       })
       .catch(err => console.log(err))
-    // update favStats using the playerStats data
+
+    // update favStats(in the mongo database) using the playerStats data
     axios.put('http://localhost:8000/api/user/60641892ec24325f9f30eccc/update', {
       favStats: playerStats
     })
@@ -52,13 +51,13 @@ export default props => {
   }
 
   //  deletes all data in the database
-  const wipeDBClean = () => {
-    axios.delete("http://localhost:8000/api/delete/data")
-      .then(res => {
-        console.log("and is gone.")
-      })
-      .catch(err => console.log("the data could not be deleted: " + err))
-  }
+  // const wipeDBClean = () => {
+  //   axios.delete("http://localhost:8000/api/delete/data")
+  //     .then(res => {
+  //       console.log("and is gone.")
+  //     })
+  //     .catch(err => console.log("the data could not be deleted: " + err))
+  // }
 
   if (width > 750) {
     return (

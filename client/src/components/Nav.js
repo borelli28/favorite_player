@@ -5,12 +5,12 @@ import { navigate } from "@reach/router";
 export default () => {
 
   const redirectHome = () => {
-    console.log("redirecting to home");
+    // console.log("redirecting to home");
     navigate("/home");
   }
 
   const redirectPlayers = () => {
-    console.log("redirect to favorite players");
+    // console.log("redirect to favorite players");
     navigate("/favorite_players");
   }
 
@@ -28,9 +28,3 @@ export default () => {
   )
 
 }
-// <form>
-//   <select name="fav-players" id="fav-players">
-//     <option value="player">Player Name</option>
-//     <option value="add-player">Add a new player</option>
-//   </select>
-// </form>
