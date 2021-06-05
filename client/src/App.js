@@ -1,8 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
 import { Router } from '@reach/router';
-import Login from './views/Login';
-import Register from './views/Register';
 import Home from './views/Home';
 import Players from './views/Players';
 import AddPlayerOne from './views/AddPlayerOne';
@@ -17,8 +15,6 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Login path="/" />
-        <Register path="/register" />
         <Home path="/home" id={id} setId={setId} playerStats={playerStats} setPlayerStats={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
         <Players path="/favorite_players" />
         <AddPlayerOne path="/addPlayer/1" playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
