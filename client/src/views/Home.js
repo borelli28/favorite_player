@@ -12,6 +12,16 @@ export default props => {
   const { playerInfo, setPlayerInfo } = props;
   const { playerStats, setPlayerStats } = props;
 
+  // use to track screen size for mobile responsiveness
+  const [width, setWidth] = useState(window.innerWidth);
+
+  // when screen resizes it will set the width to the current screen width
+  useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth)
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
   useEffect(()=>{
     axios.get('http://localhost:8000/api/players')
       .then(res=>{
@@ -50,58 +60,99 @@ export default props => {
       .catch(err => console.log("the data could not be deleted: " + err))
   }
 
-  return (
-    <div>
-      <Nav />
-      <h1>My Players</h1>
-      <div id="table-container">
-        <table className="table table-hover" id="table">
-          <thead>
-            <tr>
-              <th>Team</th>
-              <th>Name</th>
-              <th>Position</th>
-              <th>AB</th>
-              <th>H</th>
-              <th>TB</th>
-              <th>OBP</th>
-              <th>RBI</th>
-              <th>SO</th>
-              <th>R</th>
-              <th>HR</th>
-              <th>SB</th>
-              <th>CS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              (players
-                ? players.map((player, idx) => {
-                  return (
-                    <tr key={idx}>
-                      <td>{ player.favStats.team_full }</td>
-                      <td>{ player.favInfo.name }</td>
-                      <td>{ player.favInfo.position }</td>
-                      <td>{ player.favStats.ab }</td>
-                      <td>{ player.favStats.h }</td>
-                      <td>{ player.favStats.tb }</td>
-                      <td>{ player.favStats.obp }</td>
-                      <td>{ player.favStats.rbi }</td>
-                      <td>{ player.favStats.so }</td>
-                      <td>{ player.favStats.r }</td>
-                      <td>{ player.favStats.hr }</td>
-                      <td>{ player.favStats.sb }</td>
-                      <td>{ player.favStats.cs }</td>
-                    </tr>
-                  )
-                })
-              : "NO DATA"
-              )
-            }
-          </tbody>
-        </table>
+  if (width > 750) {
+    return (
+      <div id="desktop">
+        <Nav />
+        <h1>My Players</h1>
+        <div id="table-container">
+          <table className="table table-hover" id="table">
+            <thead>
+              <tr>
+                <th>Team</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>AB</th>
+                <th>H</th>
+                <th>TB</th>
+                <th>OBP</th>
+                <th>RBI</th>
+                <th>SO</th>
+                <th>R</th>
+                <th>HR</th>
+                <th>SB</th>
+                <th>CS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                (players
+                  ? players.map((player, idx) => {
+                    return (
+                      <tr key={idx}>
+                        <td>{ player.favStats.team_full }</td>
+                        <td>{ player.favInfo.name }</td>
+                        <td>{ player.favInfo.position }</td>
+                        <td>{ player.favStats.ab }</td>
+                        <td>{ player.favStats.h }</td>
+                        <td>{ player.favStats.tb }</td>
+                        <td>{ player.favStats.obp }</td>
+                        <td>{ player.favStats.rbi }</td>
+                        <td>{ player.favStats.so }</td>
+                        <td>{ player.favStats.r }</td>
+                        <td>{ player.favStats.hr }</td>
+                        <td>{ player.favStats.sb }</td>
+                        <td>{ player.favStats.cs }</td>
+                      </tr>
+                    )
+                  })
+                : "NO DATA"
+                )
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div id="mobile">
+        <Nav />
+        <h1>My Players</h1>
+        <div id="table-container">
+          <table className="table table-hover" id="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>AB</th>
+                <th>H</th>
+                <th>RBI</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                (players
+                  ? players.map((player, idx) => {
+                    return (
+                      <tr key={idx}>
+                        <td>{ player.favInfo.name }</td>
+                        <td>{ player.favInfo.position }</td>
+                        <td>{ player.favStats.ab }</td>
+                        <td>{ player.favStats.h }</td>
+                        <td>{ player.favStats.rbi }</td>
+                      </tr>
+                    )
+                  })
+                : "NO DATA"
+                )
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )
+  }
+
 
 }

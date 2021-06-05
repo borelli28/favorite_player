@@ -1,6 +1,7 @@
 /* * {
   outline: 1px dashed red;
 } */
+
 html {
   background-color: #00A3E0;
 }
@@ -23,3 +24,11 @@ div {
   #table-container #table {
       width: 80%;
     }
+
+
+/* desktop */
+
+/* mobile */
+
+#mobile #table-container {
+}
