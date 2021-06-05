@@ -59,7 +59,6 @@ export default props => {
       })
       .catch(err => console.log("the data could not be deleted: " + err))
   }
-  wipeDBClean();
 
   if (width > 750) {
     return (

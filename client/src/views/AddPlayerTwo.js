@@ -44,8 +44,7 @@ export default props => {
     localStorage.setItem("playerInfo", undefined);
 
     const getData = async () => {
-      await axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`
-      , {timeout: 5000})
+      await axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
       .then(res => {
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
         setPlayerInfo({name:name, position:pos, id:id});
