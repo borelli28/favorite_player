@@ -12,7 +12,16 @@ export default props => {
   const [name, setName] = useState("");
   const [pos, setPos] = useState("");
 
-  //  save player info data in localStorage so if the pages gets refresh
+  // use to track screen size for mobile responsiveness
+  const [width, setWidth] = useState(window.innerWidth);
+  // when screen resizes it will set the width to the current screen width
+  useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth)
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
+  // save player info data in localStorage so if the pages gets refresh
   // user can still see the data without having to submit another form
   if (Object.keys(playerInfo).length == undefined || Object.keys(playerInfo).length == 0) {
 
@@ -30,73 +39,147 @@ export default props => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // getting the stats from 2021 season later should change it so user picks the year and the season type
-    axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
+
+    // resets localStorage
+    localStorage.setItem("playerInfo", undefined);
+
+    const getData = async () => {
+      await axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`
+      , {timeout: 5000})
       .then(res => {
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
-        setPlayerInfo({name:name, position:pos, id:id})
-        navigate("/addPlayer/3");
+        setPlayerInfo({name:name, position:pos, id:id});
+
+        // check if the API returned the data else it will display an error to the user
+        try {
+          if (res.data.sport_hitting_tm.queryResults.row.sport.length > 0) {
+            navigate("/addPlayer/3");
+          }
+        } catch {
+          // the data returned by the API is empty so we redirect to playerNotAvailable page
+          console.log("This Player information is not available at this moment");
+          navigate("/playerNotAvailable");
+        }
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err);
+      });
+    }
+    getData();
+
   }
 
-  return (
-    <main>
-      <Nav />
-      <div id="table-container">
-        <table className="table table-hover" id="table">
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Position</th>
-              <th>Team</th>
-              <th>Player ID</th>
-              <th>Roster Name (Jersey Name)</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-          {
-            (playerInfo.length > 0
-            ? playerInfo.map((player, idx) => {
-              return (
-                <tr key={idx}>
-                  <td>{player.name_display_first_last}</td>
-                  <td>{player.position}</td>
-                  <td>{player.team_full}</td>
-                  <td>{player.player_id}</td>
-                  <td>{player.name_display_roster}</td>
+  if (width > 850) {
+    return (
+      <main id="desktop">
+        <Nav />
+        <div id="table-container">
+          <table className="table table-hover" id="table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Player ID</th>
+                <th>Roster Name (Jersey Name)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            {
+              (playerInfo.length > 0
+              ? playerInfo.map((player, idx) => {
+                return (
+                  <tr key={idx}>
+                    <td>{player.name_display_first_last}</td>
+                    <td>{player.position}</td>
+                    <td>{player.team_full}</td>
+                    <td>{player.player_id}</td>
+                    <td>{player.name_display_roster}</td>
+                    <td>
+                      <form onSubmit={ submitHandler } >
+                        <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(player.name_display_first_last);
+                        setPos(player.position);
+                      setId(player.player_id); }}>Add Player</button>
+                      </form>
+                    </td>
+                  </tr>
+                )
+              })
+              : <tr>
+                  <td>{playerInfo.name_display_first_last}</td>
+                  <td>{playerInfo.position}</td>
+                  <td>{playerInfo.team_full}</td>
+                  <td>{playerInfo.player_id}</td>
+                  <td>{playerInfo.name_display_roster}</td>
                   <td>
                     <form onSubmit={ submitHandler } >
-                      <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(player.name_display_first_last);
-                      setPos(player.position);
-                    setId(player.player_id); }}>Add Player</button>
+                      <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(playerInfo.name_display_first_last);
+                      setPos(playerInfo.position);
+                    setId(playerInfo.player_id); }}>Add Player</button>
                     </form>
                   </td>
                 </tr>
               )
-            })
-            : <tr>
-                <td>{playerInfo.name_display_first_last}</td>
-                <td>{playerInfo.position}</td>
-                <td>{playerInfo.team_full}</td>
-                <td>{playerInfo.player_id}</td>
-                <td>{playerInfo.name_display_roster}</td>
-                <td>
-                  <form onSubmit={ submitHandler } >
-                    <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(playerInfo.name_display_first_last);
-                    setPos(playerInfo.position);
-                  setId(playerInfo.player_id); }}>Add Player</button>
-                  </form>
-                </td>
+            }
+            </tbody>
+          </table>
+        </div>
+      </main>
+    )
+  } else {
+    return (
+      <main id="mobile">
+        <Nav />
+        <div id="table-container">
+          <table className="table table-hover" id="table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Actions</th>
               </tr>
-            )
-          }
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+            {
+              (playerInfo.length > 0
+              ? playerInfo.map((player, idx) => {
+                return (
+                  <tr key={idx}>
+                    <td>{player.name_display_first_last}</td>
+                    <td>{player.position}</td>
+                    <td>{player.team_full}</td>
+                    <td>
+                      <form onSubmit={ submitHandler } >
+                        <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(player.name_display_first_last);
+                        setPos(player.position);
+                      setId(player.player_id); }}>Add</button>
+                      </form>
+                    </td>
+                  </tr>
+                )
+              })
+              : <tr>
+                  <td>{playerInfo.name_display_first_last}</td>
+                  <td>{playerInfo.position}</td>
+                  <td>{playerInfo.team_full}</td>
+                  <td>
+                    <form onSubmit={ submitHandler } >
+                      <button className="btn btn-light" id="add-player-btn" onClick={(event) => { setName(playerInfo.name_display_first_last);
+                      setPos(playerInfo.position);
+                    setId(playerInfo.player_id); }}>Add</button>
+                    </form>
+                  </td>
+                </tr>
+              )
+            }
+            </tbody>
+          </table>
+        </div>
 
-    </main>
-  )
+      </main>
+    )
+  }
 
 }

@@ -12,7 +12,8 @@ export default props => {
     event.preventDefault();
     axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam?sport_code='mlb'&active_sw='Y'&name_part='${tempName}%25'`)
       .then(res => {
-        // console.log(res.data.search_player_all.queryResults.row);
+        console.log("all players data return by api:");
+        console.log(res.data.search_player_all.queryResults.row);
         setPlayerInfo(res.data.search_player_all.queryResults.row);
         navigate("/addPlayer/2");
      })

@@ -8,6 +8,9 @@ export default props => {
 
   const [user, setUser] = useState({});
 
+  console.log(playerStats);
+
+  // check that playerStats state is not empty else it will navugate back to add player two with an error
   useEffect(() => {
     axios.post('http://localhost:8000/api/new/player', {
       id: 1,
@@ -17,6 +20,7 @@ export default props => {
       .then(res => console.log(res));
       navigate("/favorite_players");
   })
+
 
   return (
     ""
