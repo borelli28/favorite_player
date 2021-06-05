@@ -6,23 +6,33 @@ import Nav from '../components/Nav';
 
 export default props => {
   const { playerInfo, setPlayerInfo } = props;
+
   const [tempName, setTempName] = useState("");
+  const [playerNullError,  setPlayerNullError] = useState("");
 
   const submitHandler = (event) => {
     event.preventDefault();
     axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam?sport_code='mlb'&active_sw='Y'&name_part='${tempName}%25'`)
       .then(res => {
-        console.log("all players data return by api:");
-        console.log(res.data.search_player_all.queryResults.row);
-        setPlayerInfo(res.data.search_player_all.queryResults.row);
-        navigate("/addPlayer/2");
+        try {
+          if (res.data.search_player_all.queryResults.row != undefined) {
+            setPlayerInfo(res.data.search_player_all.queryResults.row);
+            navigate("/addPlayer/2");
+          } else {
+            throw error
+          }
+        } catch {
+          setPlayerNullError("Sorry, but we could not find a player with this name");
+        }
      })
       .catch(err => console.log(err))
+      navigate("/addPlayer/1");
   }
 
   return (
     <main>
       <Nav />
+      <span id="valError">{playerNullError}</span>
       <div id="container">
         <form onSubmit={ submitHandler }>
           <label for="player-name">Enter the Player Jersey Name:</label>

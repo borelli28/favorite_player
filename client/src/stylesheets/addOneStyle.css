@@ -24,3 +24,10 @@ input {
 #search-btn {
   color: #00A3E0;
 }
+
+#valError {
+  width: 70%;
+  color: red;
+  background-color: white;
+  font-size: 1.2rem;
+}
