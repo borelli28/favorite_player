@@ -126,19 +126,19 @@ export default props => {
                 return (
                   <div key={idx}>
                     <h4>{player.favInfo.name}</h4>
-                    <ul class="list-group">
-                      <li class="list-group-item">Team: <span>{ player.favStats.team_full }</span></li>
-                      <li class="list-group-item">Position: <span>{ player.favInfo.position }</span></li>
-                      <li class="list-group-item">At Bats: <span>{ player.favStats.ab }</span></li>
-                      <li class="list-group-item">Hits: <span>{ player.favStats.h }</span></li>
-                      <li class="list-group-item">Total Bases: <span>{ player.favStats.tb }</span></li>
-                      <li class="list-group-item">On Base %: <span>{ player.favStats.obp }</span></li>
-                      <li class="list-group-item">Runs Batted In: <span>{ player.favStats.rbi }</span></li>
-                      <li class="list-group-item">Strike Outs: <span>{ player.favStats.so }</span></li>
-                      <li class="list-group-item">Runs: <span>{ player.favStats.r }</span></li>
-                      <li class="list-group-item">Home Runs: <span>{ player.favStats.hr }</span></li>
-                      <li class="list-group-item">Stolen Bases: <span>{ player.favStats.sb }</span></li>
-                      <li class="list-group-item">Caught Stealing: <span>{ player.favStats.cs }</span></li>
+                    <ul className="list-group">
+                      <li className="list-group-item">Team: <span>{ player.favStats.team_full }</span></li>
+                      <li className="list-group-item">Position: <span>{ player.favInfo.position }</span></li>
+                      <li className="list-group-item">At Bats: <span>{ player.favStats.ab }</span></li>
+                      <li className="list-group-item">Hits: <span>{ player.favStats.h }</span></li>
+                      <li className="list-group-item">Total Bases: <span>{ player.favStats.tb }</span></li>
+                      <li className="list-group-item">On Base %: <span>{ player.favStats.obp }</span></li>
+                      <li className="list-group-item">Runs Batted In: <span>{ player.favStats.rbi }</span></li>
+                      <li className="list-group-item">Strike Outs: <span>{ player.favStats.so }</span></li>
+                      <li className="list-group-item">Runs: <span>{ player.favStats.r }</span></li>
+                      <li className="list-group-item">Home Runs: <span>{ player.favStats.hr }</span></li>
+                      <li className="list-group-item">Stolen Bases: <span>{ player.favStats.sb }</span></li>
+                      <li className="list-group-item">Caught Stealing: <span>{ player.favStats.cs }</span></li>
                     </ul>
                   </div>
                 )
