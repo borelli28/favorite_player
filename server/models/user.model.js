@@ -30,24 +30,24 @@ const UserSchema = new mongoose.Schema({
   ]
 }, {timestamps: true});
 
-// use mongoose virtual to compare confirm password with password since confirm password is not save to the DB
-UserSchema.virtual('confirmPassword')
-  .get( () => this._confirmPassword )
-  .set( value => this._confirmPassword = value );
+  // use mongoose virtual to compare confirm password with password since confirm password is not save to the DB
+  UserSchema.virtual('confirmPassword')
+    .get( () => this._confirmPassword )
+    .set( value => this._confirmPassword = value );
 
-// check that confirm password match with password
-UserSchema.pre('validate', function(next) {
-  if (this.password !== this.confirmPassword) {
-    this.invalidate('confirmPassword', 'Password must match confirm password');
-  }
-  next();
-});
+  // check that confirm password match with password
+  UserSchema.pre('validate', function(next) {
+    if (this.password !== this.confirmPassword) {
+      this.invalidate('confirmPassword', 'Password must match confirm password');
+    }
+    next();
+  });
 
-UserSchema.pre('save', function(next) {
-  bcrypt.hash(this.password, 10)
-    .then(hash => {
-      this.password = hash;
-      next();
-    });
-});
+  UserSchema.pre('save', function(next) {
+    bcrypt.hash(this.password, 10)
+      .then(hash => {
+        this.password = hash;
+        next();
+      });
+  });
 module.exports.User = mongoose.model('User', UserSchema);

@@ -20,7 +20,7 @@ export default props => {
     return (
       <div id="desktop">
         <Nav />
-        <h1>Login</h1>
+        <Login />
       </div>
     )
   } else {

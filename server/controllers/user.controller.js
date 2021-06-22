@@ -1,5 +1,6 @@
 const { User } = require('../models/user.model');
 const { Player } = require('../models/user.model');
+const jwt = require("jsonwebtoken");
 
 module.exports.index = (request, response) => {
   response.json({
@@ -38,21 +39,54 @@ module.exports.deleteAllData  = (request, response) => {
   });
 }
 
-// module.exports.createUser = (request, response) => {
-//     const { username, password } = request.body;
-//     User.create({
-//         username,
-//         password
-//     })
-//         .then(user => response.json(user))
-//         .catch(err => response.json(err));
-// }
+
 module.exports.createUser = (request, response) => {
   User.create(request.body)
     .then(user => {
-        response.json({ msg: "success!", user: user });
+      const userToken = jwt.sign({
+        id: user._id
+      }, process.env.SECRET_KEY);
+      // the usertoken cookie will log the user automatically
+      response.cookie("usertoken", userToken, secret, { httpOnly: true }).json({ msg: "success!", user: user });
     })
     .catch(err => response.json(err));
+    // else logout user by deleting cookie
+    response.clearCookie('usertoken');
+    response.sendStatus(200);
+}
+
+module.exports.login = async(request, response) => {
+  console.log("inside login method in controller");
+  console.log("inside async function");
+  // find user by username
+  const user = await User.findOne({ username: request.body.username });
+
+  if(user === null) {
+    console.log("user not found in db")
+    // username not found in users collection
+    return response.sendStatus(400);
+  }
+
+  // if we made it this far, we found a user with this username
+  // let's compare the supplied password to the hashed password in the database
+  const correctPassword = await bcrypt.compare(request.body.password, user.password);
+
+  if(!correctPassword) {
+    // password wasn't a match!
+    console.log("password does not match")
+    return response.sendStatus(400);
+  }
+
+  // if we made it this far, the password was correct
+  // also this piece of code create a jsonwebtoken(an object that can be send in a cookie)
+  const userToken = jwt.sign({
+    id: user._id
+  }, process.env.SECRET_KEY);
+
+  // note that the response object allows chained calls to cookie and json
+  res.cookie("usertoken", userToken, secret, { httpOnly: true }).json({ msg: "success!" });
+
+  console.log("leaving login method");
 }
 module.exports.getAllUser = (request, response) => {
     User.find({})
