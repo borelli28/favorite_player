@@ -7,6 +7,7 @@ import AddPlayerOne from './views/AddPlayerOne';
 import AddPlayerTwo from './views/AddPlayerTwo';
 import AddPlayerThree from './views/AddPlayerThree';
 import PlayerNA from './views/PlayerNA';
+import LogReg from './views/LogReg';
 
 function App() {
   const [playerStats, setPlayerStats] = useState({});
@@ -16,6 +17,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <LogReg path="/" />
         <Home path="/home" id={id} setId={setId} playerStats={playerStats} setPlayerStats={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
         <Players path="/favorite_players" />
         <AddPlayerOne path="/addPlayer/1" playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>

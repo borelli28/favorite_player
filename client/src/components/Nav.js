@@ -28,9 +28,3 @@ export default () => {
   )
 
 }
-// <form>
-//   <select name="fav-players" id="fav-players">
-//     <option value="player">Player Name</option>
-//     <option value="add-player">Add a new player</option>
-//   </select>
-// </form>

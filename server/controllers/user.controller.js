@@ -38,14 +38,21 @@ module.exports.deleteAllData  = (request, response) => {
   });
 }
 
+// module.exports.createUser = (request, response) => {
+//     const { username, password } = request.body;
+//     User.create({
+//         username,
+//         password
+//     })
+//         .then(user => response.json(user))
+//         .catch(err => response.json(err));
+// }
 module.exports.createUser = (request, response) => {
-    const { username, password } = request.body;
-    User.create({
-        username,
-        password
+  User.create(request.body)
+    .then(user => {
+        response.json({ msg: "success!", user: user });
     })
-        .then(user => response.json(user))
-        .catch(err => response.json(err));
+    .catch(err => response.json(err));
 }
 module.exports.getAllUser = (request, response) => {
     User.find({})
