@@ -3,8 +3,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Nav from '../components/Nav';
 import Login from '../components/Login';
+import Register from '../components/Register';
+
 
 export default props => {
+  const [regForm, setRegForm] = useState(false);
 
   // use to track screen size for mobile responsiveness
   const [width, setWidth] = useState(window.innerWidth);
@@ -16,18 +19,43 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
+  console.log("reg form status:");
+  console.log(regForm);
+
   if (width > 750) {
     return (
       <div id="desktop">
         <Nav />
-        <Login />
+        {
+          (regForm
+            ? <div>
+                <Register />
+                <button className="btn btn-light" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
+              </div>
+            : <div>
+                <Login />
+                <button className="btn btn-light" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
+              </div>
+          )
+        }
       </div>
     )
   } else {
     return (
-      <div id="mobile">
+      <div id="desktop">
         <Nav />
-        <p>mobile</p>
+        {
+          (regForm
+            ? <div>
+                <Register />
+                <button className="btn btn-light" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
+              </div>
+            : <div>
+                <Login />
+                <button className="btn btn-light" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
+              </div>
+          )
+        }
       </div>
     )
   }

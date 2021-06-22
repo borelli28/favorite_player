@@ -1,6 +1,8 @@
 const { User } = require('../models/user.model');
 const { Player } = require('../models/user.model');
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 module.exports.index = (request, response) => {
   response.json({
@@ -37,27 +39,36 @@ module.exports.deleteAllData  = (request, response) => {
       response.status(200).send({message: "All data was cleared in database"});
     }
   });
+  User.deleteMany({}, function(err) {
+    if (err) {
+      response.status(500).send({error: "could not clear database"});
+    } else {
+      response.status(200).send({message: "All data was cleared in database"});
+    }
+  });
 }
 
 
 module.exports.createUser = (request, response) => {
   User.create(request.body)
     .then(user => {
+      console.log("user id thingy");
       const userToken = jwt.sign({
         id: user._id
       }, process.env.SECRET_KEY);
       // the usertoken cookie will log the user automatically
-      response.cookie("usertoken", userToken, secret, { httpOnly: true }).json({ msg: "success!", user: user });
+      console.log("cookie thingy");
+      response.cookie("usertoken", userToken, process.env.SECRET_KEY, { httpOnly: true }).json({ msg: "success!", user: user });
+      console.log("user created:")
+      console.log(user)
     })
-    .catch(err => response.json(err));
-    // else logout user by deleting cookie
-    response.clearCookie('usertoken');
-    response.sendStatus(200);
+    .catch(err => {
+      console.log("user could not be created");
+      response.json(err);
+    })
 }
-
 module.exports.login = async(request, response) => {
   console.log("inside login method in controller");
-  console.log("inside async function");
   // find user by username
   const user = await User.findOne({ username: request.body.username });
 
@@ -84,7 +95,7 @@ module.exports.login = async(request, response) => {
   }, process.env.SECRET_KEY);
 
   // note that the response object allows chained calls to cookie and json
-  res.cookie("usertoken", userToken, secret, { httpOnly: true }).json({ msg: "success!" });
+  response.cookie("usertoken", userToken, process.env.SECRET_KEY, { httpOnly: true }).json({ msg: "success!" });
 
   console.log("leaving login method");
 }
