@@ -7,8 +7,10 @@ export default props => {
   const [players, setPlayers] = useState([]);
   const [player, setPlayer] = useState([]);
   const [getBool, setGetBool] = useState(false);
+  const [username, setUsername] = useState("");
 
-  const {id, setId} = props;
+  const { userLogged, setUserLogged } = props;
+  const { id, setId } = props;
   const { playerInfo, setPlayerInfo } = props;
   const { playerStats, setPlayerStats } = props;
 
@@ -22,13 +24,35 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
+  // useEffect(()=>{
+  //   axios.get('http://localhost:8000/api/players')
+  //     .then(res=>{
+  //       console.log("res:");
+  //       console.log(res.data)
+  //       setPlayers(res.data);
+  //       // // get player id from favInfo
+  //       // setId(res.data[0].favInfo.id)
+  //     });
+  // },[])
+
   useEffect(()=>{
-    axios.get('http://localhost:8000/api/players')
-      .then(res=>{
-        // console.log("res:");
-        // console.log(res.data)
-        setPlayers(res.data);
-      });
+    // if there is data inside userLogged then save the username in state
+    if (userLogged) {
+      setUsername(JSON.parse(userLogged.config.data).username)
+      const user = JSON.parse(userLogged.config.data).username
+      axios.get('http://localhost:8000/api/user/', { params: {user} }, { withCredentials: true })
+        .then(res=>{
+          console.log("res:");
+          console.log(res.data)
+        });
+    } else {
+      axios.get('http://localhost:8000/api/user/', username)
+        .then(res=>{
+          console.log("res:");
+          console.log(res.data)
+        });
+    }
+
   },[])
 
   // request player stats using player id in favInfo
