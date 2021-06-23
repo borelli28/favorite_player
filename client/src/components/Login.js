@@ -6,6 +6,7 @@ import { navigate } from "@reach/router";
 export default props => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const { userLogged, setUserLogged } = props;
 
   const submitHandler = (event) => {
@@ -17,15 +18,16 @@ export default props => {
     })
     .then(response => {
       console.log(response)
-      setUserLogged(true);
+      setUserLogged(response);
+      console.log("user logged:")
+      console.log(response);
       navigate('/home')
     })
     .catch(error=>console.log(error))
-    setUserLogged(false);
   }
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/user')
+    axios.get('http://localhost:8000/api/user', { withCredentials: true })
       .then(response => {
         console.log(response)
         navigate('/home')
@@ -33,8 +35,6 @@ export default props => {
       .catch(error => console.log(error))
 
   }, []);
-  console.log("user logged:")
-  console.log(userLogged);
 
   return (
     <div id="login-form">

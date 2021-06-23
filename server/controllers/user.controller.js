@@ -105,7 +105,7 @@ module.exports.getAllUser = (request, response) => {
         .catch(err => response.json(err))
 }
 module.exports.getUser = (request, response) => {
-    User.findOne({_id:request.params.id})
+    User.findOne({username: request.params.username})
         .then(user => response.json(user))
         .catch(err => response.json(err))
 }

@@ -9,6 +9,8 @@ import Register from '../components/Register';
 export default props => {
   const [regForm, setRegForm] = useState(false);
 
+  const { userLogged, setUserLogged } = props;
+
   // use to track screen size for mobile responsiveness
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -33,7 +35,7 @@ export default props => {
                 <button className="btn btn-light" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
               </div>
             : <div>
-                <Login />
+                <Login userLogged={userLogged} setUserLogged={setUserLogged}/>
                 <button className="btn btn-light" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
               </div>
           )
@@ -51,7 +53,7 @@ export default props => {
                 <button className="btn btn-light" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
               </div>
             : <div>
-                <Login />
+                <Login userLogged={userLogged} setUserLogged={setUserLogged}/>
                 <button className="btn btn-light" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
               </div>
           )
