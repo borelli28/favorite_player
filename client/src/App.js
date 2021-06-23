@@ -13,11 +13,12 @@ function App() {
   const [playerStats, setPlayerStats] = useState({});
   const [playerInfo, setPlayerInfo] = useState({});
   const [id, setId] = useState("");
+  const [userLogged, setUserLogged] = useState(false);
 
   return (
     <div className="App">
       <Router>
-        <LogReg path="/" />
+        <LogReg path="/" userLogged={userLogged} setUserLogged={setUserLogged}/>
         <Home path="/home" id={id} setId={setId} playerStats={playerStats} setPlayerStats={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
         <Players path="/favorite_players" />
         <AddPlayerOne path="/addPlayer/1" playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>

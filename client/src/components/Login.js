@@ -1,10 +1,12 @@
 // import '../stylesheets/navStyle.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { navigate } from "@reach/router";
 
-export default () => {
+export default props => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { userLogged, setUserLogged } = props;
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -13,16 +15,26 @@ export default () => {
       username,
       password
     })
-    .then(response=>console.log(response))
+    .then(response => {
+      console.log(response)
+      setUserLogged(true);
+      navigate('/home')
+    })
     .catch(error=>console.log(error))
+    setUserLogged(false);
   }
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/user')
-      .then(response => console.log(response))
+      .then(response => {
+        console.log(response)
+        navigate('/home')
+      })
       .catch(error => console.log(error))
-    // axios.delete('http://localhost:8000/api/delete/data')
+
   }, []);
+  console.log("user logged:")
+  console.log(userLogged);
 
   return (
     <div id="login-form">

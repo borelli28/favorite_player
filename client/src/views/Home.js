@@ -8,7 +8,7 @@ export default props => {
   const [player, setPlayer] = useState([]);
   const [getBool, setGetBool] = useState(false);
 
-  const {id, setId} = props;
+  const { id, setId } = props;
   const { playerInfo, setPlayerInfo } = props;
   const { playerStats, setPlayerStats } = props;
 
@@ -32,6 +32,16 @@ export default props => {
         // setId(res.data[0].favInfo.id)
       });
   },[])
+
+  useEffect(() => {
+    console.log("the cookie request:")
+    axios.get('http://localhost:8000/api/user', {credentials: 'include'})
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => console.log(error))
+
+  }, []);
 
   // request player stats using player id in favInfo
   const refreshHandler = (event) => {
