@@ -19,7 +19,7 @@ export default props => {
     .then(response => {
       console.log("in then");
       console.log(response)
-      navigate('/home')
+      // navigate('/home')
     })
     .catch(error=>console.log(error))
   }
@@ -37,21 +37,11 @@ export default props => {
     .catch(error=>console.log(error))
   }
 
-  useEffect(() => {
-    fetch('http://localhost:8000/test/cookie', {
-      method: 'GET',
-      credentials: 'include'
-    });
-  }, []);
-
   // useEffect(() => {
-  //   axios.get('http://localhost:8000/api/user', { withCredentials: true })
-  //     .then(response => {
-  //       console.log(response)
-  //       navigate('/home')
-  //     })
-  //     .catch(error => console.log(error))
-  //
+  //   fetch('http://localhost:8000/test/cookie', {
+  //     method: 'GET',
+  //     credentials: 'include'
+  //   });
   // }, []);
 
   return (

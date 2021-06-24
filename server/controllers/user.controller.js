@@ -97,11 +97,9 @@ module.exports.login = async(request, response) => {
   }, process.env.SECRET_KEY);
 
   // name of cookie, cookie value, secret key, httponly, response message
-  response.cookie("usertoken", userToken, process.env.SECRET_KEY, {
-    httpOnly: true
-  })
+  response.cookie("usertoken", userToken, process.env.SECRET_KEY, { httpOnly: true });
 
-  // console.log(response);
+  console.log(response);
 
   console.log("leaving login method");
 }
@@ -111,9 +109,15 @@ module.exports.logout = (request, response) => {
   response.json({ msg: "Auth cookie deleted!" })
 }
 module.exports.getAllUser = (request, response) => {
-    User.find({})
-        .then(user => response.json(user))
-        .catch(err => response.json(err))
+  console.log("in getAllUser");
+  User.find({})
+    .then(user => {
+      // console.log(user);
+      response.status(200).send({ "users": user });
+      console.log("response sent");
+    })
+    .catch(err => response.json(err))
+  console.log("leaving getAllUser");
 }
 module.exports.getUser = (request, response) => {
     User.findOne({username: request.params.username})

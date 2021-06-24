@@ -20,7 +20,7 @@ module.exports = function(app){
 
   app.post("/api/logout", UserController.logout);
   // this route now has to be authenticated
-  app.get("/api/user", authenticate, UserController.getAllUser);
+  app.get("/api/user", UserController.getAllUser);
 
   app.get('/test/cookie', function (request, response) {
     const userToken = jwt.sign({

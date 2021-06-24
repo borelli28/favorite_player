@@ -36,48 +36,19 @@ export default props => {
   //     });
   // },[])
 
-  // useEffect(()=>{
-  //   // if there is data inside userLogged then save the username in state
-  //   if (userLogged) {
-  //     setUsername(JSON.parse(userLogged.config.data).username)
-  //     // const token = JSON.parse(userLogged.data).userToken
-  //     console.log("token")
-  //     console.log(userLogged.data.userToken)
-  //
-  //     axios.get('http://localhost:8000/api/user',
-  //     { withCredentials: true })
-  //     .then(res=>{
-  //       if (res.status != 401 && res.status != 404) {
-  //         console.log("res:");
-  //         console.log(res)
-  //       } else {
-  //         console.log("401 error or 404");
-  //       }
-  //     });
-  //   } else {
-  //     axios.get('http://localhost:8000/api/user',
-  //     { withCredentials: true })
-  //     .then(res=>{
-  //       if (res.status != 401 && res.status != 404) {
-  //         console.log("res:");
-  //         console.log(res)
-  //       } else {
-  //         console.log("404 error or 401");
-  //       }
-  //     });
-  //     console.log("else executed")
-  //   }
-  //
-  // },[])
+  useEffect(()=>{
 
-  // const sendCookie = (event) => {
-  //   event.preventDefault();
-  //
-  //   fetch('http://localhost:8000/test/send-cookie', {
-  //     method: 'POST',
-  //     credentials: 'include'
-  //   })
-  // }
+  },[])
+
+  const sendCookie = (event) => {
+    event.preventDefault();
+
+      axios.get('http://localhost:8000/api/user')
+        .then( res => {
+          setUsername(res.data.users)
+        });
+      console.log("leaving use effect");
+  }
 
   // request player stats using player id in favInfo
   const refreshHandler = (event) => {
@@ -105,12 +76,15 @@ export default props => {
       })
       .catch(err => console.log("the data could not be deleted: " + err))
   }
+  console.log("response");
+  console.log(username);
 
   if (width > 750) {
     return (
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
+        <button className="btn btn-light" type="button" onClick={ sendCookie }>get users</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>
