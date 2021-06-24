@@ -36,6 +36,15 @@ module.exports = function(app){
   });
 
   app.post('/test/send-cookie', function(request, response) {
-    console.log(response.socket);
+    console.log("cookies sent:");
+
+    res = response.socket;
+
+    for (cookie in res._httpMessage.req.cookies) {
+      console.log("Cookie: " + cookie)
+      console.log("Value: " + res._httpMessage.req.cookies[cookie])
+    }
+
+    console.log("leaving send cookie route");
   });
 }

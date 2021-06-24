@@ -25,16 +25,16 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  // useEffect(()=>{
-  //   axios.get('http://localhost:8000/api/players')
-  //     .then(res=>{
-  //       console.log("res:");
-  //       console.log(res.data)
-  //       setPlayers(res.data);
-  //       // // get player id from favInfo
-  //       // setId(res.data[0].favInfo.id)
-  //     });
-  // },[])
+  useEffect(()=>{
+    fetch('http://localhost:8000/test/send-cookie', {
+      method: 'POST',
+      credentials: 'include'
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error=>console.log(error))
+  },[])
 
   useEffect(()=>{
 
