@@ -17,7 +17,6 @@ module.exports.createPlayer = (request, response) => {
     })
     .catch(err => response.json(err));
 }
-
 module.exports.getAllPlayers = (request, response) => {
   Player.find({})
         .then(player => response.json(player))
@@ -30,7 +29,6 @@ module.exports.deletePlayer = (request, response) => {
         .catch(err => response.json(err))
         console.log("player deleted in controller");
 }
-
 module.exports.deleteAllData  = (request, response) => {
   Player.deleteMany({}, function(err) {
     if (err) {
@@ -58,7 +56,9 @@ module.exports.createUser = (request, response) => {
       }, process.env.SECRET_KEY);
       // the usertoken cookie will log the user automatically
       console.log("cookie thingy");
-      response.cookie("usertoken", userToken, process.env.SECRET_KEY, { httpOnly: true }).json({ msg: "success!", user: user });
+      response.cookie("usertoken", userToken, {
+          httpOnly: true
+        }).json({ msg: "success!" });
       console.log("user created:")
       console.log(user)
     })
@@ -69,8 +69,11 @@ module.exports.createUser = (request, response) => {
 }
 module.exports.login = async(request, response) => {
   console.log("inside login method in controller");
+
   // find user by username
   const user = await User.findOne({ username: request.body.username });
+  console.log("user:");
+  console.log(user)
 
   if(user === null) {
     console.log("user not found in db")
@@ -88,16 +91,24 @@ module.exports.login = async(request, response) => {
     return response.sendStatus(400);
   }
 
-  // if we made it this far, the password was correct
-  // also this piece of code create a jsonwebtoken(an object that can be send in a cookie)
+  // creates a jsonwebtoken(an object that can be send in a cookie)
   const userToken = jwt.sign({
     id: user._id
   }, process.env.SECRET_KEY);
 
-  // note that the response object allows chained calls to cookie and json
-  response.cookie("usertoken", userToken, process.env.SECRET_KEY, { httpOnly: true }).json({ msg: "success!" });
+  // name of cookie, cookie value, secret key, httponly, response message
+  response.cookie("usertoken", userToken, process.env.SECRET_KEY, {
+    httpOnly: true
+  })
+
+  // console.log(response);
 
   console.log("leaving login method");
+}
+module.exports.logout = (request, response) => {
+  response.clearCookie("JWT");
+  response.sendStatus(200);
+  response.json({ msg: "Auth cookie deleted!" })
 }
 module.exports.getAllUser = (request, response) => {
     User.find({})
