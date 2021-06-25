@@ -111,21 +111,29 @@ module.exports.logout = (request, response) => {
   response.sendStatus(200);
   response.json({ msg: "Auth cookie deleted!" })
 }
-module.exports.getAllUser = (request, response) => {
-  console.log("in getAllUser");
-  User.find({})
-    .then(user => {
-      // console.log(user);
-      response.status(200).send({ "users": user });
-      console.log("response sent");
-    })
-    .catch(err => response.json(err))
-  console.log("leaving getAllUser");
-}
 module.exports.getUser = (request, response) => {
-    User.findOne({username: request.params.username})
-        .then(user => response.json(user))
-        .catch(err => response.json(err))
+  User.findOne({_id: process.env.LOGGED_USER_ID })
+    .then(user => {
+      response.status(200)
+
+      response.send(user)
+    })
+    .catch(err => {
+      console.log(err)
+      console.log("Probably, a user was not found with that ID")
+      response.json(err)
+    })
+}
+module.exports.getAllUser = (request, response) => {
+  User.find({})
+    .then(users => {
+      response.status(200)
+      response.send(users)
+    })
+    .catch(err => {
+      console.log(err)
+      response.json(err)
+    })
 }
 module.exports.updateUser = (request, response) => {
     User.findOneAndUpdate({_id: request.params.id}, request.body, {new:true})

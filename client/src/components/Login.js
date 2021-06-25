@@ -37,13 +37,6 @@ export default props => {
     .catch(error=>console.log(error))
   }
 
-  // useEffect(() => {
-  //   fetch('http://localhost:8000/test/cookie', {
-  //     method: 'GET',
-  //     credentials: 'include'
-  //   });
-  // }, []);
-
   return (
     <div id="login-form">
       <form onSubmit={ submitHandler }>

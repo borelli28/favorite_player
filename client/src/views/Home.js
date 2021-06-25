@@ -25,43 +25,38 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
+  // get the user object from the server
+  useEffect(()=>{
+    fetch('http://localhost:8000/api/user', {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(user => {
+      // change password so is not visible to anybody
+      user["password"] = "<hidden>";
+      user["createdAt"] = "<hidden>";
+      user["updatedAt"] = "<hidden>";
+
+      console.log("User Info:")
+      console.log(user);
+      setUserLogged(user)
+    })
+  },[])
+
+
   // useEffect(()=>{
-  //   fetch('http://localhost:8000/test/send-cookie', {
-  //     method: 'POST',
+  //   fetch('http://localhost:8000/api/users', {
+  //     method: 'GET',
   //     credentials: 'include'
   //   })
-  //   .then(response => {
-  //     console.log(response)
-  //   })
-  //   .catch(error=>console.log(error))
-  // },[])
-  //
-  // useEffect(()=>{
-  //
+  //   .then(response => response.json())
+  //   .then(users => {
+  //     console.log("All Users:")
+  //     console.log(users)
+  //   });
   // },[])
 
-  // const sendCookie = (event) => {
-  //   event.preventDefault();
-  //
-  //     axios.get('http://localhost:8000/api/user')
-  //       .then( res => {
-  //         setUsername(res.data.users)
-  //       });
-  //     console.log("leaving use effect");
-  // }
-
-  const sendCookie = (event) => {
-    event.preventDefault();
-
-      fetch('http://localhost:8000/test/send-cookie', {
-        method: 'POST',
-        credentials: 'include'
-      })
-      .then( res => {
-        setUsername(res)
-      });
-      console.log("leaving use effect");
-  }
 
   // request player stats using player id in favInfo
   const refreshHandler = (event) => {
@@ -89,15 +84,12 @@ export default props => {
       })
       .catch(err => console.log("the data could not be deleted: " + err))
   }
-  console.log("response");
-  console.log(username);
 
   if (width > 750) {
     return (
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
-        <button className="btn btn-light" type="button" onClick={ sendCookie }>Send Cookie</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>

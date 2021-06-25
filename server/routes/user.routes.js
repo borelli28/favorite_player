@@ -13,7 +13,7 @@ module.exports = function(app){
 
   app.delete('/api/delete/data', authenticate, UserController.deleteAllData);
 
-  app.get('/api/user/:username', authenticate, UserController.getUser);
+  app.get('/api/user/', authenticate, UserController.getUser);
   app.put('/api/user/:id/update', authenticate, UserController.updateUser);
   app.delete('/api/user/:id/delete', authenticate, UserController.deleteUser);
 
@@ -26,7 +26,7 @@ module.exports = function(app){
 
   app.get('/test/cookie', function (request, response) {
     // const userToken = jwt.sign({
-    //     id: "007"
+    //     id: user._id
     //   }, process.env.SECRET_KEY);
     //
     // response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
