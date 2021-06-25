@@ -13,28 +13,29 @@ export default props => {
     event.preventDefault();
 
     axios.post('http://localhost:8000/api/login', {
-      username,
-      password
-    })
+      username: username,
+      password: password
+    }, { withCredentials: true })
     .then(response => {
+      console.log("in then");
       console.log(response)
-      setUserLogged(response);
-      console.log("user logged:")
-      console.log(response);
       navigate('/home')
     })
     .catch(error=>console.log(error))
   }
 
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/user', { withCredentials: true })
-      .then(response => {
-        console.log(response)
-        navigate('/home')
-      })
-      .catch(error => console.log(error))
+  const sendCookie = (event) => {
+    event.preventDefault();
 
-  }, []);
+    fetch('http://localhost:8000/test/send-cookie', {
+      method: 'POST',
+      credentials: 'include'
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error=>console.log(error))
+  }
 
   return (
     <div id="login-form">
@@ -45,8 +46,9 @@ export default props => {
         <label htmlFor="password">Password:</label>
         <input type="password" name="password" onChange={(event) => { setPassword(event.target.value) }} />
 
-        <button className="btn btn-light" type="submit" id="search-btn">Login</button>
+        <button className="btn btn-light" type="submit" id="login-btn">Login</button>
       </form>
+      <button className="btn btn-light" type="button" onClick={ sendCookie }>send cookie to server</button>
     </div>
   )
 

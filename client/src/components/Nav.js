@@ -1,6 +1,7 @@
 import '../stylesheets/navStyle.css';
 import React from 'react';
 import { navigate } from "@reach/router";
+import axios from 'axios';
 
 export default () => {
 
@@ -14,6 +15,14 @@ export default () => {
     navigate("/favorite_players");
   }
 
+  const logout = () => {
+    axios.post('http://localhost:8000/api/logout')
+      .then(res => {
+        console.log("user logout");
+        console.log(res);
+      })
+  }
+
   return (
     <nav className="active">
       <ul id="nav">
@@ -22,6 +31,9 @@ export default () => {
         </li>
         <li>
           <button className="btn btn-light" onClick={ redirectPlayers }>Players</button>
+        </li>
+        <li>
+          <button className="btn btn-light" onClick={ logout }>Logout</button>
         </li>
       </ul>
     </nav>

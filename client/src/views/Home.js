@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import axios from 'axios';
 
+
 export default props => {
   const [players, setPlayers] = useState([]);
   const [player, setPlayer] = useState([]);
@@ -24,36 +25,38 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
+  // get the user object from the server
+  useEffect(()=>{
+    fetch('http://localhost:8000/api/user', {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(user => {
+      // change password so is not visible to anybody
+      user["password"] = "<hidden>";
+      user["createdAt"] = "<hidden>";
+      user["updatedAt"] = "<hidden>";
+
+      console.log("User Info:")
+      console.log(user);
+      setUserLogged(user)
+    })
+  },[])
+
+
   // useEffect(()=>{
-  //   axios.get('http://localhost:8000/api/players')
-  //     .then(res=>{
-  //       console.log("res:");
-  //       console.log(res.data)
-  //       setPlayers(res.data);
-  //       // // get player id from favInfo
-  //       // setId(res.data[0].favInfo.id)
-  //     });
+  //   fetch('http://localhost:8000/api/users', {
+  //     method: 'GET',
+  //     credentials: 'include'
+  //   })
+  //   .then(response => response.json())
+  //   .then(users => {
+  //     console.log("All Users:")
+  //     console.log(users)
+  //   });
   // },[])
 
-  useEffect(()=>{
-    // if there is data inside userLogged then save the username in state
-    if (userLogged) {
-      setUsername(JSON.parse(userLogged.config.data).username)
-      const user = JSON.parse(userLogged.config.data).username
-      axios.get('http://localhost:8000/api/user/', { params: {user} }, { withCredentials: true })
-        .then(res=>{
-          console.log("res:");
-          console.log(res.data)
-        });
-    } else {
-      axios.get('http://localhost:8000/api/user/', username)
-        .then(res=>{
-          console.log("res:");
-          console.log(res.data)
-        });
-    }
-
-  },[])
 
   // request player stats using player id in favInfo
   const refreshHandler = (event) => {
