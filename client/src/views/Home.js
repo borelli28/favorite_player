@@ -25,28 +25,41 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  useEffect(()=>{
-    fetch('http://localhost:8000/test/send-cookie', {
-      method: 'POST',
-      credentials: 'include'
-    })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error=>console.log(error))
-  },[])
+  // useEffect(()=>{
+  //   fetch('http://localhost:8000/test/send-cookie', {
+  //     method: 'POST',
+  //     credentials: 'include'
+  //   })
+  //   .then(response => {
+  //     console.log(response)
+  //   })
+  //   .catch(error=>console.log(error))
+  // },[])
+  //
+  // useEffect(()=>{
+  //
+  // },[])
 
-  useEffect(()=>{
-
-  },[])
+  // const sendCookie = (event) => {
+  //   event.preventDefault();
+  //
+  //     axios.get('http://localhost:8000/api/user')
+  //       .then( res => {
+  //         setUsername(res.data.users)
+  //       });
+  //     console.log("leaving use effect");
+  // }
 
   const sendCookie = (event) => {
     event.preventDefault();
 
-      axios.get('http://localhost:8000/api/user')
-        .then( res => {
-          setUsername(res.data.users)
-        });
+      fetch('http://localhost:8000/test/send-cookie', {
+        method: 'POST',
+        credentials: 'include'
+      })
+      .then( res => {
+        setUsername(res)
+      });
       console.log("leaving use effect");
   }
 
@@ -84,7 +97,7 @@ export default props => {
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
-        <button className="btn btn-light" type="button" onClick={ sendCookie }>get users</button>
+        <button className="btn btn-light" type="button" onClick={ sendCookie }>Send Cookie</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>

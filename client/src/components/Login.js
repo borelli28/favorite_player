@@ -15,11 +15,11 @@ export default props => {
     axios.post('http://localhost:8000/api/login', {
       username: username,
       password: password
-    })
+    }, { withCredentials: true })
     .then(response => {
       console.log("in then");
       console.log(response)
-      // navigate('/home')
+      navigate('/home')
     })
     .catch(error=>console.log(error))
   }

@@ -2,6 +2,7 @@ const { User } = require('../models/user.model');
 const { Player } = require('../models/user.model');
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+// allowed application to access env folder - environment variables(secret variables)
 require('dotenv').config();
 
 module.exports.index = (request, response) => {
@@ -56,9 +57,10 @@ module.exports.createUser = (request, response) => {
       }, process.env.SECRET_KEY);
       // the usertoken cookie will log the user automatically
       console.log("cookie thingy");
-      response.cookie("usertoken", userToken, {
-          httpOnly: true
-        }).json({ msg: "success!" });
+      // name of cookie, cookie value, secret key, httponly(dont show to javascript)
+      response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
+        httpOnly: true
+      });
       console.log("user created:")
       console.log(user)
     })
@@ -96,15 +98,16 @@ module.exports.login = async(request, response) => {
     id: user._id
   }, process.env.SECRET_KEY);
 
-  // name of cookie, cookie value, secret key, httponly, response message
-  response.cookie("usertoken", userToken, process.env.SECRET_KEY, { httpOnly: true });
-
-  console.log(response);
+  // name of cookie, cookie value, secret key, httponly(dont show to javascript)
+  response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
+    httpOnly: true
+  });
+  response.send("Cookie created: " + userToken);
 
   console.log("leaving login method");
 }
 module.exports.logout = (request, response) => {
-  response.clearCookie("JWT");
+  response.clearCookie("usertoken");
   response.sendStatus(200);
   response.json({ msg: "Auth cookie deleted!" })
 }
