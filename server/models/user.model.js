@@ -3,9 +3,7 @@ const bcrypt = require('bcrypt');
 
 const PlayerSchema = new mongoose.Schema({
   // name of the user that added this player
-  username: String,
-  id: {type: Number},
-  favStats: { type: Object },
+  theUser: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   favInfo: { type: Object }
 }, { timestamps: true });
 module.exports.Player = mongoose.model('Player', PlayerSchema);
@@ -24,10 +22,9 @@ const UserSchema = new mongoose.Schema({
     minlength: [8, "Password must be 8 characters or longer"],
     trim: true
   },
-  players: [
+  playerIds: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Player"
+      type: String
     }
   ]
 }, {timestamps: true});

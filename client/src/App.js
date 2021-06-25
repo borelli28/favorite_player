@@ -23,7 +23,7 @@ function App() {
         <Players path="/favorite_players" />
         <AddPlayerOne path="/addPlayer/1" playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
         <AddPlayerTwo path="/addPlayer/2" id={id} setId={setId} playerStats={playerStats} setPlayerStats={setPlayerStats} playerInfo={playerInfo} setPlayerInfo={setPlayerInfo}/>
-        <AddPlayerThree path="/addPlayer/3" playerStats={playerStats} playerInfo={playerInfo}/>
+        <AddPlayerThree path="/addPlayer/3" userLogged={userLogged} setUserLogged={setUserLogged} playerStats={playerStats} playerInfo={playerInfo}/>
         <PlayerNA path="/playerNotAvailable" />
       </Router>
     </div>

@@ -33,10 +33,6 @@ export default props => {
     })
     .then(response => response.json())
     .then(user => {
-      // change password so is not visible to anybody
-      user["password"] = "<hidden>";
-      user["createdAt"] = "<hidden>";
-      user["updatedAt"] = "<hidden>";
 
       console.log("User Info:")
       console.log(user);
@@ -77,20 +73,21 @@ export default props => {
       .then(res => console.log(res));
   }
 
-  //  deletes all data in the database
-  // const wipeDBClean = () => {
-  //   axios.delete("http://localhost:8000/api/delete/data")
-  //     .then(res => {
-  //       console.log("and is gone.")
-  //     })
-  //     .catch(err => console.log("the data could not be deleted: " + err))
-  // }
+   // deletes all data in the database
+  const wipeDBClean = () => {
+    axios.delete("http://localhost:8000/api/delete/data", { withCredentials: true })
+      .then(res => {
+        console.log("and is gone.")
+      })
+      .catch(err => console.log("the data could not be deleted: " + err))
+  }
 
   if (width > 750) {
     return (
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
+        <button className="btn btn-light" onClick={ wipeDBClean }>wipe players data</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>

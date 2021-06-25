@@ -26,13 +26,13 @@ export default props => {
   if (Object.keys(playerInfo).length == undefined || Object.keys(playerInfo).length == 0) {
 
     useEffect(()=>{
-      const playerPersist = localStorage.getItem("playerInfo")
+      const playerPersist = localStorage.getItem("playerInfoTemp")
       const newPlayerInfo = JSON.parse(playerPersist);
       setPlayerInfo(newPlayerInfo)
     },[])
   } else {
     useEffect(() => {
-      localStorage.setItem("playerInfo", JSON.stringify(playerInfo))
+      localStorage.setItem("playerInfoTemp", JSON.stringify(playerInfo))
       // console.log("playerInfo saved in local storage");
     }, [playerInfo])
   }
@@ -41,7 +41,7 @@ export default props => {
     event.preventDefault();
 
     // resets localStorage
-    localStorage.setItem("playerInfo", undefined);
+    localStorage.setItem("playerInfoTemp", undefined);
 
     const getData = async () => {
       await axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)

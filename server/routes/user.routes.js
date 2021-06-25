@@ -24,19 +24,6 @@ module.exports = function(app){
   // this route now has to be authenticated
   app.get("/api/users", authenticate, UserController.getAllUser);
 
-  app.get('/test/cookie', function (request, response) {
-    // const userToken = jwt.sign({
-    //     id: user._id
-    //   }, process.env.SECRET_KEY);
-    //
-    // response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
-    //   maxAge: 86_400_000,
-    //   httpOnly: true
-    // });
-    // response.send('Cookie has been send with the response');
-    // console.log(response)
-  });
-
   app.post('/test/send-cookie', authenticate, function(request, response) {
     console.log("cookies sent:");
 

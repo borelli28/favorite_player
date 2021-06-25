@@ -12,7 +12,7 @@ export default () => {
 
   if (getBool === false) {
     setGetBool(true);
-    axios.get('http://localhost:8000/api/players')
+    axios.get('http://localhost:8000/api/players', { withCredentials: true })
       .then(res => {
         setPlayers(res.data);
       })
@@ -27,7 +27,7 @@ export default () => {
   // deletes a player
   const deletePlayer = () => {
     // pass the id of the player so it can be deleted
-    axios.delete(`http://localhost:8000/api/player/${idToDelete}/delete`)
+    axios.delete(`http://localhost:8000/api/player/${idToDelete}/delete`, { withCredentials: true })
       .then(res => {
         console.log("Player deleted");
       })
