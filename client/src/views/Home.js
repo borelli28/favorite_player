@@ -11,7 +11,7 @@ export default props => {
   const [username, setUsername] = useState("");
 
   const { userLogged, setUserLogged } = props;
-  const { id, setId } = props;
+  // const { id, setId } = props;
   const { playerInfo, setPlayerInfo } = props;
   const { playerStats, setPlayerStats } = props;
 
@@ -41,37 +41,34 @@ export default props => {
   },[])
 
 
-  // useEffect(()=>{
-  //   fetch('http://localhost:8000/api/users', {
-  //     method: 'GET',
-  //     credentials: 'include'
-  //   })
-  //   .then(response => response.json())
-  //   .then(users => {
-  //     console.log("All Users:")
-  //     console.log(users)
-  //   });
-  // },[])
-
-
   // request player stats using player id in favInfo
   const refreshHandler = (event) => {
     event.preventDefault();
-    // ask for the new data and assign the response to playerStats
-    axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
-      .then(res => {
-        setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
-        console.log("New stats requested");
 
-      })
-      .catch(err => console.log(err))
+    const userPlayerIds = userLogged["playerIds"];
 
-    // update favStats(in the mongo database) using the playerStats data
-    axios.put('http://localhost:8000/api/user/60641892ec24325f9f30eccc/update', {
-      favStats: playerStats
-    })
-      .then(res => console.log(res));
+    // gets all the player stats by looping trough each player id in playerIds and
+    // request the data to the api and appending it to playerStats
+    for (let id in userPlayerIds) {
+      console.log("id:")
+      console.log(id);
+      // ask for the new data and assign the response to playerStats
+      axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${userPlayerIds[id]}'`)
+        .then(res => {
+          let newStats = playerStats;
+          console.log("res:");
+          console.log(res);
+          newStats.push(res.data.sport_hitting_tm.queryResults.row);
+          setPlayerStats({ newStats });
+          console.log("New stats requested");
+
+        })
+        .catch(err => console.log(err))
+    }
   }
+
+  console.log("new stats");
+  console.log(playerStats);
 
    // deletes all data in the database
   const wipeDBClean = () => {
@@ -87,7 +84,8 @@ export default props => {
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
-        <button className="btn btn-light" onClick={ wipeDBClean }>wipe players data</button>
+        <button className="btn btn-danger" onClick={ wipeDBClean }>wipe all db data</button>
+        <button className="btn btn-light" onClick={ refreshHandler }>get player stats</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>
@@ -109,23 +107,20 @@ export default props => {
             </thead>
             <tbody>
               {
-                (players
-                  ? players.map((player, idx) => {
+                (playerStats.newStats
+                  ? playerStats.newStats.map((player, idx) => {
                     return (
                       <tr key={idx}>
-                        <td>{ player.favStats.team_full }</td>
-                        <td>{ player.favInfo.name }</td>
-                        <td>{ player.favInfo.position }</td>
-                        <td>{ player.favStats.ab }</td>
-                        <td>{ player.favStats.h }</td>
-                        <td>{ player.favStats.tb }</td>
-                        <td>{ player.favStats.obp }</td>
-                        <td>{ player.favStats.rbi }</td>
-                        <td>{ player.favStats.so }</td>
-                        <td>{ player.favStats.r }</td>
-                        <td>{ player.favStats.hr }</td>
-                        <td>{ player.favStats.sb }</td>
-                        <td>{ player.favStats.cs }</td>
+                        <td>{ player.ab }</td>
+                        <td>{ player.h }</td>
+                        <td>{ player.tb }</td>
+                        <td>{ player.obp }</td>
+                        <td>{ player.rbi }</td>
+                        <td>{ player.so }</td>
+                        <td>{ player.r }</td>
+                        <td>{ player.hr }</td>
+                        <td>{ player.sb }</td>
+                        <td>{ player.cs }</td>
                       </tr>
                     )
                   })
@@ -142,35 +137,6 @@ export default props => {
     return (
       <div id="small-mobile">
         <Nav />
-        <h1>My Players</h1>
-        <div>
-          {
-            (players
-              ? players.map((player, idx) => {
-                return (
-                  <div key={idx}>
-                    <h4>{player.favInfo.name}</h4>
-                    <ul className="list-group">
-                      <li className="list-group-item">Team: <span>{ player.favStats.team_full }</span></li>
-                      <li className="list-group-item">Position: <span>{ player.favInfo.position }</span></li>
-                      <li className="list-group-item">At Bats: <span>{ player.favStats.ab }</span></li>
-                      <li className="list-group-item">Hits: <span>{ player.favStats.h }</span></li>
-                      <li className="list-group-item">Total Bases: <span>{ player.favStats.tb }</span></li>
-                      <li className="list-group-item">On Base %: <span>{ player.favStats.obp }</span></li>
-                      <li className="list-group-item">Runs Batted In: <span>{ player.favStats.rbi }</span></li>
-                      <li className="list-group-item">Strike Outs: <span>{ player.favStats.so }</span></li>
-                      <li className="list-group-item">Runs: <span>{ player.favStats.r }</span></li>
-                      <li className="list-group-item">Home Runs: <span>{ player.favStats.hr }</span></li>
-                      <li className="list-group-item">Stolen Bases: <span>{ player.favStats.sb }</span></li>
-                      <li className="list-group-item">Caught Stealing: <span>{ player.favStats.cs }</span></li>
-                    </ul>
-                  </div>
-                )
-              })
-            : "NO DATA"
-            )
-          }
-        </div>
       </div>
     )
 

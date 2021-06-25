@@ -10,7 +10,7 @@ import PlayerNA from './views/PlayerNA';
 import LogReg from './views/LogReg';
 
 function App() {
-  const [playerStats, setPlayerStats] = useState({});
+  const [playerStats, setPlayerStats] = useState([]);
   const [playerInfo, setPlayerInfo] = useState({});
   const [id, setId] = useState("");
   const [userLogged, setUserLogged] = useState();
