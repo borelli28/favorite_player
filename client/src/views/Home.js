@@ -7,19 +7,10 @@ import { navigate } from "@reach/router";
 
 export default props => {
   const [players, setPlayers] = useState([]);
-  const [getBool, setGetBool] = useState(false);
+  // const [getBool, setGetBool] = useState(false);
   const [username, setUsername] = useState("");
 
   const { userLogged, setUserLogged } = props;
-  // const { id, setId } = props;
-  const { playerInfo, setPlayerInfo } = props;
-
-  const { homeRender, setHomeRender} = props;
-
-  // if (homeRender == false) {
-  //   navigate('/home')
-  //   setHomeRender(true);
-  // }
 
   // use to track screen size for mobile responsiveness
   const [width, setWidth] = useState(window.innerWidth);
@@ -36,6 +27,8 @@ export default props => {
     let thePlayersInfo;
     let playerStats = [];
     let userPlayerIds;
+    // clears out the players in the hook to fix duplicates players bug
+    setPlayers([]);
     let newPlayers = players;
 
     // get the user object from the server
@@ -89,12 +82,11 @@ export default props => {
       .catch(error => {
       })
     });
-    setHomeRender(false);
-  },[homeRender])
+
+  },[])
 
   console.log("The Players:")
   console.log(players);
-  console.log(homeRender);
 
   // deletes all data in the database
   const wipeDBClean = () => {
@@ -110,7 +102,6 @@ export default props => {
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
-        <button className="btn btn-dark" onClick={ (event) => { setHomeRender(true) }}>Get Stats</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>
