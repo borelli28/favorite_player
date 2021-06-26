@@ -7,7 +7,6 @@ import { navigate } from "@reach/router";
 
 export default props => {
   const [players, setPlayers] = useState([]);
-  // const [getBool, setGetBool] = useState(false);
   const [username, setUsername] = useState("");
 
   const { userLogged, setUserLogged } = props;
@@ -23,12 +22,6 @@ export default props => {
   }, []);
 
   useEffect(() => {
-
-  // axios.delete('http://localhost:8000/api/delete/data', { withCredentials: true })
-  //   .then(res => {
-  //     console.log("and is gone.")
-  //   })
-  //   .catch(err => console.log("the data could not be deleted: " + err))
 
     let thePlayersInfo;
     let playerStats = [];
@@ -87,12 +80,12 @@ export default props => {
               // iterate trough object to check for undefined data returned by the api
               for (let obj in newPlayers) {
                 // only put object in players if it not include undefined data
-                if (newPlayers[obj]["info"] != undefined && newPlayers[obj]["stats"]!= undefined) {
+                if (newPlayers[obj]["info"] !== undefined && newPlayers[obj]["stats"]!== undefined) {
                   setPlayers(newPlayers);
                   console.log("players setted");
                 } else {
                   console.log(`this object: ${newPlayers[obj]} returned some undefined data`);
-
+                  setPlayer([]);
                 }
               }
 
@@ -120,7 +113,7 @@ export default props => {
 
     axios.delete('http://localhost:8000/api/delete/all/users', { withCredentials: true })
       .then(res => {
-        console.log("and is gone.")
+        console.log("And its...gone!")
         navigate('/')
       })
       .catch(err => console.log("the data could not be deleted: " + err))
