@@ -11,7 +11,8 @@ module.exports = function(app){
   app.get('/api/players', authenticate, UserController.getAllPlayers);
   app.delete('/api/player/:id/delete', authenticate, UserController.deletePlayer);
 
-  app.delete('/api/delete/data', authenticate, UserController.deleteAllData);
+  app.delete('/api/delete/all/players', UserController.deleteAllPlayers);
+  app.delete('/api/delete/all/users', UserController.deleteAllUsers);
 
   app.get('/api/user/', authenticate, UserController.getUser);
   app.put('/api/user/:id/update', authenticate, UserController.updateUser);

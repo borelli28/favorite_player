@@ -24,12 +24,18 @@ export default props => {
 
   useEffect(() => {
 
+  // axios.delete('http://localhost:8000/api/delete/data', { withCredentials: true })
+  //   .then(res => {
+  //     console.log("and is gone.")
+  //   })
+  //   .catch(err => console.log("the data could not be deleted: " + err))
+
     let thePlayersInfo;
     let playerStats = [];
     let userPlayerIds;
     // clears out the players in the hook to fix duplicates players bug
     setPlayers([]);
-    let newPlayers = players;
+    let newPlayers = [];
 
     // get the user object from the server
     fetch('http://localhost:8000/api/user', {
@@ -38,7 +44,8 @@ export default props => {
     })
     .then(response => response.json())
     .then(user => {
-
+      console.log("User:");
+      console.log(user);
       setUserLogged(user)
 
       // gets all the players that user added from the DB
@@ -49,6 +56,8 @@ export default props => {
 
         userPlayerIds = user["playerIds"];
 
+        console.log("playerIds:")
+        console.log(userPlayerIds)
 
         // gets all the player stats by looping trough each player id in playerIds and
         // request the data to the api and appending it to playerStats
@@ -58,20 +67,33 @@ export default props => {
           axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${userPlayerIds[val]}'`)
             .then(res => {
 
-              // console.log(res.data.sport_hitting_tm.queryResults.row)
-              playerStats.push(res.data.sport_hitting_tm.queryResults.row);
+              // check for undefined stats
+              if (res.data.sport_hitting_tm.queryResults.row !== undefined) {
+                playerStats.push(res.data.sport_hitting_tm.queryResults.row);
+              }
 
               // put player info and stats in the same array
               // grab each playerInfo and stat and put them in the same object(playerinfo is the first element and second element is the stats)
-              for (let i in thePlayersInfo) {
-                let tempObj = {};
+              let tempObj = {};
 
-                tempObj["info"] = thePlayersInfo[i];
-                tempObj["stats"] = playerStats[i];
+              tempObj["info"] = thePlayersInfo[val];
+              tempObj["stats"] = playerStats[val];
 
-                newPlayers.push(tempObj);
+              newPlayers.push(tempObj);
 
-                setPlayers(newPlayers);
+              // console.log("newPlayers obj");
+              // console.log(newPlayers);
+
+              // iterate trough object to check for undefined data returned by the api
+              for (let obj in newPlayers) {
+                // only put object in players if it not include undefined data
+                if (newPlayers[obj]["info"] != undefined && newPlayers[obj]["stats"]!= undefined) {
+                  setPlayers(newPlayers);
+                  console.log("players setted");
+                } else {
+                  console.log(`this object: ${newPlayers[obj]} returned some undefined data`);
+
+                }
               }
 
             })
@@ -90,11 +112,19 @@ export default props => {
 
   // deletes all data in the database
   const wipeDBClean = () => {
-    axios.delete('http://localhost:8000/api/delete/data', { withCredentials: true })
+    axios.delete('http://localhost:8000/api/delete/all/players', { withCredentials: true })
       .then(res => {
-        console.log("and is gone.")
+        console.log("all players gone...")
       })
       .catch(err => console.log("the data could not be deleted: " + err))
+
+    axios.delete('http://localhost:8000/api/delete/all/users', { withCredentials: true })
+      .then(res => {
+        console.log("and is gone.")
+        navigate('/')
+      })
+      .catch(err => console.log("the data could not be deleted: " + err))
+
   }
 
   if (width > 750) {
@@ -102,6 +132,7 @@ export default props => {
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
+        <button className="btn btn-danger" onClick={ wipeDBClean }> wipe all data from db</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>
@@ -127,8 +158,8 @@ export default props => {
                   ? players.map((player, idx) => {
                     return (
                       <tr key={idx}>
-                        <td>{ player.info.favInfo.name }</td>
                         <td>{ player.stats.team_full }</td>
+                        <td>{ player.info.favInfo.name }</td>
                         <td>{ player.info.favInfo.position }</td>
                         <td>{ player.stats.ab }</td>
                         <td>{ player.stats.h }</td>

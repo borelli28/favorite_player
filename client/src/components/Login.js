@@ -24,19 +24,6 @@ export default props => {
     .catch(error=>console.log(error))
   }
 
-  const sendCookie = (event) => {
-    event.preventDefault();
-
-    fetch('http://localhost:8000/test/send-cookie', {
-      method: 'POST',
-      credentials: 'include'
-    })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error=>console.log(error))
-  }
-
   return (
     <div id="login-form">
       <form onSubmit={ submitHandler }>
@@ -48,7 +35,6 @@ export default props => {
 
         <button className="btn btn-light" type="submit" id="login-btn">Login</button>
       </form>
-      <button className="btn btn-light" type="button" onClick={ sendCookie }>send cookie to server</button>
     </div>
   )
 

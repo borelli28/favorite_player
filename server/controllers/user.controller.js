@@ -44,21 +44,24 @@ module.exports.deletePlayer = (request, response) => {
         .catch(err => response.json(err))
         console.log("player deleted in controller");
 }
-module.exports.deleteAllData  = (request, response) => {
-  Player.deleteMany({}, function(err) {
-    if (err) {
-      response.status(500).send({error: "could not clear database"});
-    } else {
-      response.status(200).send({message: "All data was cleared in database"});
-    }
-  });
-  User.deleteMany({}, function(err) {
-    if (err) {
-      response.status(500).send({error: "could not clear database"});
-    } else {
-      response.status(200).send({message: "All data was cleared in database"});
-    }
-  });
+module.exports.deleteAllPlayers  = (request, response) => {
+  console.log("inside delete data method in controller");
+  try {
+    Player.deleteMany({}, function(error) {
+      if (error) {
+        response.sendStatus(500)
+        return;
+      } else {
+        response.status(200).send({message: "All players cleared in database"});
+        console.log("Players schema cleared");
+      }
+    });
+  } catch(error) {
+    // response.status(201).send({error: `An error occured while trying to cleared DB: ${error}`})
+    console.log(`An error occured while trying to cleared DB: ${e}`);
+    logMyErrors(e);
+    return;
+  }
 }
 
 
@@ -159,4 +162,23 @@ module.exports.deleteUser = (request, response) => {
     User.deleteOne({ _id: request.params.id })
         .then(deleteConfirmation => response.json(deleteConfirmation))
         .catch(err => response.json(err))
+}
+module.exports.deleteAllUsers  = (request, response) => {
+  console.log("inside delete data method in controller");
+  try {
+    User.deleteMany({}, function(error) {
+      if (error) {
+        response.sendStatus(500);
+        return;
+      } else {
+        response.status(200).send({message: "All users cleared from database"});
+        console.log("Users schema cleared");
+      }
+    });
+  } catch(error) {
+    // response.status(201).send({error: `An error occured while trying to cleared DB: ${error}`})
+    console.log(`An error occured while trying to cleared DB: ${e}`);
+    logMyErrors(e);
+    return;
+  }
 }
