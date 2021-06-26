@@ -13,7 +13,8 @@ export default props => {
   const { userLogged, setUserLogged } = props;
   // const { id, setId } = props;
   const { playerInfo, setPlayerInfo } = props;
-  const { playerStats, setPlayerStats } = props;
+
+  const { homeRender, setHomeRender} = props;
 
   // use to track screen size for mobile responsiveness
   const [width, setWidth] = useState(window.innerWidth);
@@ -25,8 +26,14 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  // get the user object from the server
-  useEffect(()=>{
+  useEffect(() => {
+
+    let thePlayersInfo;
+    let playerStats = [];
+    let userPlayerIds;
+    let newPlayers = players;
+
+    // get the user object from the server
     fetch('http://localhost:8000/api/user', {
       method: 'GET',
       credentials: 'include'
@@ -34,45 +41,58 @@ export default props => {
     .then(response => response.json())
     .then(user => {
 
-      console.log("User Info:")
-      console.log(user);
       setUserLogged(user)
-    })
+
+      // gets all the players that user added from the DB
+      axios.get('http://localhost:8000/api/players', { withCredentials: true })
+      .then(response => {
+
+        thePlayersInfo = response.data;
+
+        userPlayerIds = user["playerIds"];
+
+
+        // gets all the player stats by looping trough each player id in playerIds and
+        // request the data to the api and appending it to playerStats
+        for (let val in userPlayerIds) {
+
+          // ask for the new data and assign the response to playerStats
+          axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${userPlayerIds[val]}'`)
+            .then(res => {
+
+              // console.log(res.data.sport_hitting_tm.queryResults.row)
+              playerStats.push(res.data.sport_hitting_tm.queryResults.row);
+
+              // put player info and stats in the same array
+              // grab each playerInfo and stat and put them in the same object(playerinfo is the first element and second element is the stats)
+              for (let i in thePlayersInfo) {
+                let tempObj = {};
+
+                tempObj["info"] = thePlayersInfo[i];
+                tempObj["stats"] = playerStats[i];
+
+                newPlayers.push(tempObj);
+
+                setPlayers(newPlayers);
+              }
+
+            })
+            .catch(err => console.log(err))
+        }
+
+      })
+      .catch(error => {
+      })
+    });
   },[])
 
+  console.log("The Players:")
+  console.log(players);
+  console.log(width);
 
-  // request player stats using player id in favInfo
-  const refreshHandler = (event) => {
-    event.preventDefault();
-
-    const userPlayerIds = userLogged["playerIds"];
-
-    // gets all the player stats by looping trough each player id in playerIds and
-    // request the data to the api and appending it to playerStats
-    for (let id in userPlayerIds) {
-      console.log("id:")
-      console.log(id);
-      // ask for the new data and assign the response to playerStats
-      axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${userPlayerIds[id]}'`)
-        .then(res => {
-          let newStats = playerStats;
-          console.log("res:");
-          console.log(res);
-          newStats.push(res.data.sport_hitting_tm.queryResults.row);
-          setPlayerStats({ newStats });
-          console.log("New stats requested");
-
-        })
-        .catch(err => console.log(err))
-    }
-  }
-
-  console.log("new stats");
-  console.log(playerStats);
-
-   // deletes all data in the database
+  // deletes all data in the database
   const wipeDBClean = () => {
-    axios.delete("http://localhost:8000/api/delete/data", { withCredentials: true })
+    axios.delete('http://localhost:8000/api/delete/data', { withCredentials: true })
       .then(res => {
         console.log("and is gone.")
       })
@@ -85,7 +105,6 @@ export default props => {
         <Nav />
         <h1>My Players</h1>
         <button className="btn btn-danger" onClick={ wipeDBClean }>wipe all db data</button>
-        <button className="btn btn-light" onClick={ refreshHandler }>get player stats</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>
@@ -107,20 +126,24 @@ export default props => {
             </thead>
             <tbody>
               {
-                (playerStats.newStats
-                  ? playerStats.newStats.map((player, idx) => {
+                (players
+                  ? players.map((player, idx) => {
                     return (
                       <tr key={idx}>
-                        <td>{ player.ab }</td>
-                        <td>{ player.h }</td>
-                        <td>{ player.tb }</td>
-                        <td>{ player.obp }</td>
-                        <td>{ player.rbi }</td>
-                        <td>{ player.so }</td>
-                        <td>{ player.r }</td>
-                        <td>{ player.hr }</td>
-                        <td>{ player.sb }</td>
-                        <td>{ player.cs }</td>
+                        <td>sdger</td>
+                        <td>{ player.info.favInfo.name }</td>
+                        <td>{ player.stats.team_full }</td>
+                        <td>{ player.info.favInfo.position }</td>
+                        <td>{ player.stats.ab }</td>
+                        <td>{ player.stats.h }</td>
+                        <td>{ player.stats.tb }</td>
+                        <td>{ player.stats.obp }</td>
+                        <td>{ player.stats.rbi }</td>
+                        <td>{ player.stats.so }</td>
+                        <td>{ player.stats.r }</td>
+                        <td>{ player.stats.hr }</td>
+                        <td>{ player.stats.sb }</td>
+                        <td>{ player.stats.cs }</td>
                       </tr>
                     )
                   })

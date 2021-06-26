@@ -37,39 +37,6 @@ export default () => {
   return (
     <div>
       <Nav />
-      <div id="table-container">
-        <table className="table table-strip table-hover" id="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Team</th>
-              <th>Position</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              (players
-              ? players.map((player, idx) => {
-                return (
-                  <tr key={idx}>
-                    <td>{player.favInfo.name}</td>
-                    <td>{player.favStats.team_full}</td>
-                    <td>{player.favInfo.position}</td>
-                    <td>
-                      <form onSubmit={ deletePlayer }>
-                        <button type="submit" className="btn btn-danger" onClick={() => setIdToDelete(player._id)}>Remove</button>
-                      </form>
-                    </td>
-                  </tr>
-                )
-              })
-              : "No data"
-              )
-            }
-          </tbody>
-        </table>
-      </div>
       <button className="btn btn-light" type="button" id="add-player-btn" onClick={ addPlayer }>Add Player</button>
     </div>
   )

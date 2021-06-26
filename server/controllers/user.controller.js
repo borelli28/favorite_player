@@ -18,9 +18,23 @@ module.exports.createPlayer = (request, response) => {
     })
     .catch(err => response.json(err));
 }
+// get all players that the current logged user added
 module.exports.getAllPlayers = (request, response) => {
-  Player.find({})
-        .then(player => response.json(player))
+
+  let userObj;
+
+  console.log("inside getAllPlayers");
+  const getUserById = async () => {
+    userObj = await User.findById(process.env.LOGGED_USER_ID);
+    console.log("the user:")
+    console.log(userObj);
+  }
+  Player.find({ theUser: userObj })
+        .then(players => {
+          response.status(200)
+          response.send(players)
+          console.log("exiting getAllPlayers");
+        })
         .catch(err => response.json(err))
 }
 
