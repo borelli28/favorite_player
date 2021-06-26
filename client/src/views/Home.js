@@ -2,11 +2,11 @@ import '../stylesheets/homeStyle.css';
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import axios from 'axios';
+import { navigate } from "@reach/router";
 
 
 export default props => {
   const [players, setPlayers] = useState([]);
-  const [player, setPlayer] = useState([]);
   const [getBool, setGetBool] = useState(false);
   const [username, setUsername] = useState("");
 
@@ -15,6 +15,11 @@ export default props => {
   const { playerInfo, setPlayerInfo } = props;
 
   const { homeRender, setHomeRender} = props;
+
+  // if (homeRender == false) {
+  //   navigate('/home')
+  //   setHomeRender(true);
+  // }
 
   // use to track screen size for mobile responsiveness
   const [width, setWidth] = useState(window.innerWidth);
@@ -84,11 +89,12 @@ export default props => {
       .catch(error => {
       })
     });
-  },[])
+    setHomeRender(false);
+  },[homeRender])
 
   console.log("The Players:")
   console.log(players);
-  console.log(width);
+  console.log(homeRender);
 
   // deletes all data in the database
   const wipeDBClean = () => {
@@ -104,7 +110,7 @@ export default props => {
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
-        <button className="btn btn-danger" onClick={ wipeDBClean }>wipe all db data</button>
+        <button className="btn btn-dark" onClick={ (event) => { setHomeRender(true) }}>Get Stats</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>
@@ -130,7 +136,6 @@ export default props => {
                   ? players.map((player, idx) => {
                     return (
                       <tr key={idx}>
-                        <td>sdger</td>
                         <td>{ player.info.favInfo.name }</td>
                         <td>{ player.stats.team_full }</td>
                         <td>{ player.info.favInfo.position }</td>
@@ -164,6 +169,5 @@ export default props => {
     )
 
   }
-
 
 }
