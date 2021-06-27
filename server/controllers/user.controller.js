@@ -14,26 +14,40 @@ module.exports.index = (request, response) => {
   });
 }
 
-module.exports.createUser = (request, response) => {
-  User.create(request.body)
-    .then(user => {
-      console.log("user id thingy");
-      const userToken = jwt.sign({
-        id: user._id
-      }, process.env.SECRET_KEY);
-      // the usertoken cookie will log the user automatically
-      console.log("cookie thingy");
-      // name of cookie, cookie value, secret key, httponly(dont show to javascript)
-      response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
-        httpOnly: true
-      });
-      console.log("user created:")
-      console.log(user)
-    })
-    .catch(err => {
-      console.log("user could not be created");
-      response.json(err);
-    })
+module.exports.createUser = async (request, response) => {
+  // check that username does not exist yet
+  const username = await User.findOne({ username: request.body.username });
+
+  if(username === null) {
+
+    User.create(request.body)
+      .then(user => {
+        console.log("user id thingy");
+        const userToken = jwt.sign({
+          id: user._id
+        }, process.env.SECRET_KEY);
+        // the usertoken cookie will log the user automatically
+        console.log("cookie thingy");
+        // name of cookie, cookie value, secret key, httponly(dont show to javascript)
+        response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
+          httpOnly: true
+        });
+        console.log("user created:")
+        console.log(user)
+      })
+      .catch(error => {
+        console.log("user could not be created");
+        console.log(error)
+        response.status(400).json(error);
+      })
+
+    } else {
+    console.log("Username already exist, user needs to pick another username")
+    // error.response.data.errors
+    response.status(400).json({errors: "Enter a different username"});
+    // response.data("Username already exist, pick another one");
+    console.log(response);
+  }
 }
 module.exports.login = async(request, response) => {
   console.log("inside login method in controller");
@@ -46,7 +60,7 @@ module.exports.login = async(request, response) => {
   if(user === null) {
     console.log("user not found in db")
     // username not found in users collection
-    return response.sendStatus(400);
+    return response.status(400).json({message: "Username not found"});
   }
 
   // if we made it this far, we found a user with this username
@@ -56,7 +70,7 @@ module.exports.login = async(request, response) => {
   if(!correctPassword) {
     // password wasn't a match!
     console.log("password does not match")
-    return response.sendStatus(400);
+    return response.status(400).json({message: "Invalid password"});
   }
 
   // creates a jsonwebtoken(an object that can be send in a cookie)
