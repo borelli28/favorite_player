@@ -8,7 +8,7 @@ import { navigate } from "@reach/router";
 export default props => {
   const [players, setPlayers] = useState([]);
 
-  const { userLogged, setUserLogged } = props;
+  const [ userLogged, setUserLogged ] = useState();
 
   // use to track screen size for mobile responsiveness
   const [width, setWidth] = useState(window.innerWidth);

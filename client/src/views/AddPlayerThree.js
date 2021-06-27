@@ -5,13 +5,11 @@ import axios from 'axios';
 export default props => {
   const { playerInfo } = props;
   const { playerStats } = props;
-  const { userLogged, setUserLogged } = props;
 
   const [user, setUser] = useState({});
 
-  // check that playerStats state is not empty else it will navigate back to add player two with an error
   useEffect(() => {
-    // const loggedUserId = userLogged["_id"];
+
     let userObj;
     let playerObj = {};
     axios.get('http://localhost:8000/api/user/', { withCredentials: true })
@@ -53,8 +51,7 @@ export default props => {
         console.log(`Could not add new player to user instance: ${error}`);
       })
 
-      // navigate("/favorite_players");
-      navigate("/home");
+      navigate("/favorite_players");
     });
   });
 
