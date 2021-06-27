@@ -6,6 +6,9 @@ import { navigate } from "@reach/router";
 
 
 export default props => {
+  // clears out all local storage on home render
+  localStorage.clear();
+
   const [players, setPlayers] = useState([]);
 
   const [ userLogged, setUserLogged ] = useState();
