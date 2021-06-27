@@ -1,6 +1,7 @@
 // import '../stylesheets/navStyle.css';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { navigate } from "@reach/router";
 
 export default () => {
   const [username, setUsername] = useState("");
@@ -15,7 +16,10 @@ export default () => {
       password,
       confirmPassword
     })
-    .then(response=>console.log(response))
+    .then(response => {
+      console.log(response)
+      navigate('/home')
+    })
     .catch(error=>console.log(error))
   }
 

@@ -10,7 +10,6 @@ export default props => {
   localStorage.clear();
 
   const [players, setPlayers] = useState([]);
-
   const [ userLogged, setUserLogged ] = useState();
 
   // use to track screen size for mobile responsiveness

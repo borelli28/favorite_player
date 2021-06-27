@@ -13,59 +13,6 @@ module.exports.index = (request, response) => {
     message: "Hello World"
   });
 }
-// module.exports.createPlayer = (request, response) => {
-//   Player.create(request.body)
-//     .then(player => {
-//       response.json({ msg: "success!", player: player })
-//     })
-//     .catch(err => response.json(err));
-// }
-// // get all players that the current logged user added
-// module.exports.getAllPlayers = (request, response) => {
-//
-//   let userObj;
-//
-//   console.log("inside getAllPlayers");
-//   const getUserById = async () => {
-//     userObj = await User.findById(process.env.LOGGED_USER_ID);
-//     console.log("the user:")
-//     console.log(userObj);
-//   }
-//   Player.find({ theUser: userObj })
-//         .then(players => {
-//           response.status(200)
-//           response.send(players)
-//           console.log("exiting getAllPlayers");
-//         })
-//         .catch(err => response.json(err))
-// }
-//
-// module.exports.deletePlayer = (request, response) => {
-//   Player.deleteOne({ _id: request.params.id })
-//         .then(deleteConfirmation => response.json(deleteConfirmation))
-//         .catch(err => response.json(err))
-//         console.log("player deleted in controller");
-// }
-// module.exports.deleteAllPlayers  = (request, response) => {
-//   console.log("inside delete data method in controller");
-//   try {
-//     Player.deleteMany({}, function(error) {
-//       if (error) {
-//         response.sendStatus(500)
-//         return;
-//       } else {
-//         response.status(200).send({message: "All players cleared in database"});
-//         console.log("Players schema cleared");
-//       }
-//     });
-//   } catch(error) {
-//     // response.status(201).send({error: `An error occured while trying to cleared DB: ${error}`})
-//     console.log(`An error occured while trying to cleared DB: ${e}`);
-//     logMyErrors(e);
-//     return;
-//   }
-// }
-
 
 module.exports.createUser = (request, response) => {
   User.create(request.body)
