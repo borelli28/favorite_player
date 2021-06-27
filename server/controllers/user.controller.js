@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 let mongoose = require('mongoose');
 // allowed application to access env folder - environment variables(secret variables)
 require('dotenv').config();
+// necessary to get rid of deprecation warning in: findOneAndUpdate() method. https://mongoosejs.com/docs/deprecations.html#findandmodify
 mongoose.set('useFindAndModify', false);
 
 module.exports.index = (request, response) => {

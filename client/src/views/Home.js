@@ -7,7 +7,6 @@ import { navigate } from "@reach/router";
 
 export default props => {
   const [players, setPlayers] = useState([]);
-  const [username, setUsername] = useState("");
 
   const { userLogged, setUserLogged } = props;
 
@@ -21,103 +20,41 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  // useEffect(() => {
-  //
-  //   let thePlayersInfo;
-  //   let playerStats = [];
-  //   let userPlayerIds;
-  //   // clears out the players in the hook to fix duplicates players bug
-  //   setPlayers([]);
-  //   let newPlayers = [];
-  //
-  //   // get the user object from the server
-  //   fetch('http://localhost:8000/api/user', {
-  //     method: 'GET',
-  //     credentials: 'include'
-  //   })
-  //   .then(response => response.json())
-  //   .then(user => {
-  //     // console.log("User:");
-  //     // console.log(user);
-  //     setUserLogged(user)
-  //
-  //     // gets all the players that user added from the DB
-  //     axios.get('http://localhost:8000/api/players', { withCredentials: true })
-  //     .then(response => {
-  //
-  //       thePlayersInfo = response.data;
-  //
-  //       userPlayerIds = user["playerIds"];
-  //
-  //       // gets all the player stats by looping trough each player id in playerIds and
-  //       // request the data to the api and appending it to playerStats
-  //       for (let val in userPlayerIds) {
-  //
-  //         // ask for the new data and assign the response to playerStats
-  //         axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${userPlayerIds[val]}'`)
-  //           .then(res => {
-  //
-  //             // check for undefined stats
-  //             if (res.data.sport_hitting_tm.queryResults.row !== undefined) {
-  //               playerStats.push(res.data.sport_hitting_tm.queryResults.row);
-  //             }
-  //
-  //             // put player info and stats in the same array
-  //             // grab each playerInfo and stat and put them in the same object(playerinfo is the first element and second element is the stats)
-  //             let tempObj = {};
-  //
-  //             tempObj["info"] = thePlayersInfo[val];
-  //             tempObj["stats"] = playerStats[val];
-  //
-  //             newPlayers.push(tempObj);
-  //
-  //             // console.log("newPlayers obj");
-  //             // console.log(newPlayers);
-  //
-  //             // iterate trough object to check for undefined data returned by the api
-  //             for (let obj in newPlayers) {
-  //               // only put object in players if it not include undefined data
-  //               if (newPlayers[obj]["info"] !== undefined && newPlayers[obj]["stats"]!== undefined) {
-  //                 setPlayers(newPlayers);
-  //                 console.log("players setted");
-  //               } else {
-  //                 console.log(`this object: ${newPlayers[obj]} returned some undefined data`);
-  //                 setPlayers([]);
-  //               }
-  //             }
-  //
-  //           })
-  //           .catch(err => console.log(err))
-  //       }
-  //
-  //     })
-  //     .catch(error => {
-  //     })
-  //   });
-  //
-  // },[])
-
   useEffect(() => {
+
+    // clears out the players in the hook to fix duplicates players bug
+    setPlayers([]);
+
+    // get the user object from the server
     axios.get('http://localhost:8000/api/user/', { withCredentials: true })
     .then(user => {
-      console.log("the response returned from getUser():")
-      console.log(user);
-    })
-    .catch(error => {
-      console.log("Error happen while fetching user");
-    })
-  }, []);
+      console.log("User:");
+      console.log(user.data);
+      setUserLogged(user.data)
+      // setPlayers(user.data.players);
+
+      for (let i in user.data.players) {
+        // console.log(user.data.players[i])
+        let playerId = user.data.players[i].playerInfo.id;
+
+        // now get fresh stats data from the API, and PUT them in the user players object
+        axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${playerId}'`)
+        .then(res => {
+          user.data.players[i].playerStats = res.data.sport_hitting_tm.queryResults.row;
+          setPlayers(user.data.players);
+          console.log("New stats requested");
+        })
+        .catch(err => console.log(err))
+      }
+
+    });
+  },[])
 
   console.log("The Players:")
   console.log(players);
 
   // deletes all data in the database
   const wipeDBClean = () => {
-    // axios.delete('http://localhost:8000/api/delete/all/players', { withCredentials: true })
-    //   .then(res => {
-    //     console.log("all players gone...")
-    //   })
-    //   .catch(err => console.log("the data could not be deleted: " + err))
 
     axios.delete('http://localhost:8000/api/delete/all/users', { withCredentials: true })
       .then(res => {
@@ -159,19 +96,19 @@ export default props => {
                   ? players.map((player, idx) => {
                     return (
                       <tr key={idx}>
-                        <td>{ player.stats.team_full }</td>
-                        <td>{ player.info.favInfo.name }</td>
-                        <td>{ player.info.favInfo.position }</td>
-                        <td>{ player.stats.ab }</td>
-                        <td>{ player.stats.h }</td>
-                        <td>{ player.stats.tb }</td>
-                        <td>{ player.stats.obp }</td>
-                        <td>{ player.stats.rbi }</td>
-                        <td>{ player.stats.so }</td>
-                        <td>{ player.stats.r }</td>
-                        <td>{ player.stats.hr }</td>
-                        <td>{ player.stats.sb }</td>
-                        <td>{ player.stats.cs }</td>
+                        <td>{ player.playerStats.team_full }</td>
+                        <td>{ player.playerInfo.name }</td>
+                        <td>{ player.playerInfo.position }</td>
+                        <td>{ player.playerStats.ab }</td>
+                        <td>{ player.playerStats.h }</td>
+                        <td>{ player.playerStats.tb }</td>
+                        <td>{ player.playerStats.obp }</td>
+                        <td>{ player.playerStats.rbi }</td>
+                        <td>{ player.playerStats.so }</td>
+                        <td>{ player.playerStats.r }</td>
+                        <td>{ player.playerStats.hr }</td>
+                        <td>{ player.playerStats.sb }</td>
+                        <td>{ player.playerStats.cs }</td>
                       </tr>
                     )
                   })
@@ -188,6 +125,35 @@ export default props => {
     return (
       <div id="small-mobile">
         <Nav />
+        <h1>My Players</h1>
+<div>
+  {
+    (players
+      ? players.map((player, idx) => {
+        return (
+          <div key={idx}>
+            <h4>{ player.playerInfo.name }</h4>
+            <ul className="list-group">
+              <li className="list-group-item">Team: <span>{ player.playerStats.team_full }</span></li>
+              <li className="list-group-item">Position: <span>{ player.playerInfo.position }</span></li>
+              <li className="list-group-item">At Bats: <span>{ player.playerStats.ab }</span></li>
+              <li className="list-group-item">Hits: <span>{ player.playerStats.h }</span></li>
+              <li className="list-group-item">Total Bases: <span>{ player.playerStats.tb }</span></li>
+              <li className="list-group-item">On Base %: <span>{ player.playerStats.obp }</span></li>
+              <li className="list-group-item">Runs Batted In: <span>{ player.playerStats.rbi }</span></li>
+              <li className="list-group-item">Strike Outs: <span>{ player.playerStats.so }</span></li>
+              <li className="list-group-item">Runs: <span>{ player.playerStats.r }</span></li>
+              <li className="list-group-item">Home Runs: <span>{ player.playerStats.hr }</span></li>
+              <li className="list-group-item">Stolen Bases: <span>{ player.playerStats.sb }</span></li>
+              <li className="list-group-item">Caught Stealing: <span>{ player.playerStats.cs }</span></li>
+            </ul>
+          </div>
+        )
+      })
+    : "NO DATA"
+    )
+  }
+</div>
       </div>
     )
 
