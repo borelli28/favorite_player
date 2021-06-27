@@ -34,6 +34,7 @@ module.exports.createUser = async (request, response) => {
         });
         console.log("user created:")
         console.log(user)
+        response.status(200).json(user)
       })
       .catch(error => {
         console.log("user could not be created");

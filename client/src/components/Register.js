@@ -1,4 +1,4 @@
-// import '../stylesheets/navStyle.css';
+import '../stylesheets/navStyle.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { navigate } from "@reach/router";
@@ -17,14 +17,13 @@ export default () => {
       username,
       password,
       confirmPassword
-    })
+    }, { withCredentials: true })
     .then(response => {
-      console.log(response)
+      console.log("registration response:");
+      console.log(response);
       navigate('/home')
     })
     .catch(error => {
-      // console.log("raw response:");
-      // console.log(error.response.data.errors.length);
       // if error returned is longer than 4 that means there only one object returned wich is: {errors: "Username exist, pick another one"}. Instead of an array with errors
       if (error.response.data.errors.length > 4) {
         // push error message into valErrors array
@@ -43,7 +42,9 @@ export default () => {
           console.log(valErrors);
         }
       }
+
     })
+
   }
 
   return (
@@ -72,7 +73,7 @@ export default () => {
         <label htmlFor="confirm-password">Confirm Password:</label>
         <input type="password" name="confirm-password" onChange={(event) => { setConfirmPassword(event.target.value) }} required/>
 
-        <button className="btn btn-light" type="submit" id="search-btn">Register</button>
+        <button className="btn btn-light" type="submit" id="login-btn">Register</button>
       </form>
     </div>
   )
