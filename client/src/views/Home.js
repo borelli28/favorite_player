@@ -21,95 +21,103 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
+  // useEffect(() => {
+  //
+  //   let thePlayersInfo;
+  //   let playerStats = [];
+  //   let userPlayerIds;
+  //   // clears out the players in the hook to fix duplicates players bug
+  //   setPlayers([]);
+  //   let newPlayers = [];
+  //
+  //   // get the user object from the server
+  //   fetch('http://localhost:8000/api/user', {
+  //     method: 'GET',
+  //     credentials: 'include'
+  //   })
+  //   .then(response => response.json())
+  //   .then(user => {
+  //     // console.log("User:");
+  //     // console.log(user);
+  //     setUserLogged(user)
+  //
+  //     // gets all the players that user added from the DB
+  //     axios.get('http://localhost:8000/api/players', { withCredentials: true })
+  //     .then(response => {
+  //
+  //       thePlayersInfo = response.data;
+  //
+  //       userPlayerIds = user["playerIds"];
+  //
+  //       // gets all the player stats by looping trough each player id in playerIds and
+  //       // request the data to the api and appending it to playerStats
+  //       for (let val in userPlayerIds) {
+  //
+  //         // ask for the new data and assign the response to playerStats
+  //         axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${userPlayerIds[val]}'`)
+  //           .then(res => {
+  //
+  //             // check for undefined stats
+  //             if (res.data.sport_hitting_tm.queryResults.row !== undefined) {
+  //               playerStats.push(res.data.sport_hitting_tm.queryResults.row);
+  //             }
+  //
+  //             // put player info and stats in the same array
+  //             // grab each playerInfo and stat and put them in the same object(playerinfo is the first element and second element is the stats)
+  //             let tempObj = {};
+  //
+  //             tempObj["info"] = thePlayersInfo[val];
+  //             tempObj["stats"] = playerStats[val];
+  //
+  //             newPlayers.push(tempObj);
+  //
+  //             // console.log("newPlayers obj");
+  //             // console.log(newPlayers);
+  //
+  //             // iterate trough object to check for undefined data returned by the api
+  //             for (let obj in newPlayers) {
+  //               // only put object in players if it not include undefined data
+  //               if (newPlayers[obj]["info"] !== undefined && newPlayers[obj]["stats"]!== undefined) {
+  //                 setPlayers(newPlayers);
+  //                 console.log("players setted");
+  //               } else {
+  //                 console.log(`this object: ${newPlayers[obj]} returned some undefined data`);
+  //                 setPlayers([]);
+  //               }
+  //             }
+  //
+  //           })
+  //           .catch(err => console.log(err))
+  //       }
+  //
+  //     })
+  //     .catch(error => {
+  //     })
+  //   });
+  //
+  // },[])
+
   useEffect(() => {
-
-    let thePlayersInfo;
-    let playerStats = [];
-    let userPlayerIds;
-    // clears out the players in the hook to fix duplicates players bug
-    setPlayers([]);
-    let newPlayers = [];
-
-    // get the user object from the server
-    fetch('http://localhost:8000/api/user', {
-      method: 'GET',
-      credentials: 'include'
-    })
-    .then(response => response.json())
+    axios.get('http://localhost:8000/api/user/', { withCredentials: true })
     .then(user => {
-      console.log("User:");
+      console.log("the response returned from getUser():")
       console.log(user);
-      setUserLogged(user)
-
-      // gets all the players that user added from the DB
-      axios.get('http://localhost:8000/api/players', { withCredentials: true })
-      .then(response => {
-
-        thePlayersInfo = response.data;
-
-        userPlayerIds = user["playerIds"];
-
-        console.log("playerIds:")
-        console.log(userPlayerIds)
-
-        // gets all the player stats by looping trough each player id in playerIds and
-        // request the data to the api and appending it to playerStats
-        for (let val in userPlayerIds) {
-
-          // ask for the new data and assign the response to playerStats
-          axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${userPlayerIds[val]}'`)
-            .then(res => {
-
-              // check for undefined stats
-              if (res.data.sport_hitting_tm.queryResults.row !== undefined) {
-                playerStats.push(res.data.sport_hitting_tm.queryResults.row);
-              }
-
-              // put player info and stats in the same array
-              // grab each playerInfo and stat and put them in the same object(playerinfo is the first element and second element is the stats)
-              let tempObj = {};
-
-              tempObj["info"] = thePlayersInfo[val];
-              tempObj["stats"] = playerStats[val];
-
-              newPlayers.push(tempObj);
-
-              // console.log("newPlayers obj");
-              // console.log(newPlayers);
-
-              // iterate trough object to check for undefined data returned by the api
-              for (let obj in newPlayers) {
-                // only put object in players if it not include undefined data
-                if (newPlayers[obj]["info"] !== undefined && newPlayers[obj]["stats"]!== undefined) {
-                  setPlayers(newPlayers);
-                  console.log("players setted");
-                } else {
-                  console.log(`this object: ${newPlayers[obj]} returned some undefined data`);
-                  setPlayer([]);
-                }
-              }
-
-            })
-            .catch(err => console.log(err))
-        }
-
-      })
-      .catch(error => {
-      })
-    });
-
-  },[])
+    })
+    .catch(error => {
+      console.log("Error happen while fetching user");
+    })
+  }, []);
 
   console.log("The Players:")
   console.log(players);
 
   // deletes all data in the database
   const wipeDBClean = () => {
-    axios.delete('http://localhost:8000/api/delete/all/players', { withCredentials: true })
-      .then(res => {
-        console.log("all players gone...")
-      })
-      .catch(err => console.log("the data could not be deleted: " + err))
+    // axios.delete('http://localhost:8000/api/delete/all/players', { withCredentials: true })
+    //   .then(res => {
+    //     console.log("all players gone...")
+    //   })
+    //   .catch(err => console.log("the data could not be deleted: " + err))
 
     axios.delete('http://localhost:8000/api/delete/all/users', { withCredentials: true })
       .then(res => {

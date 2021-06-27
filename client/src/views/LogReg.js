@@ -21,9 +21,6 @@ export default props => {
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  console.log("reg form status:");
-  console.log(regForm);
-
   if (width > 750) {
     return (
       <div id="desktop">

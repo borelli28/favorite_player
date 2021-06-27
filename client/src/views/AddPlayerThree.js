@@ -9,41 +9,52 @@ export default props => {
 
   const [user, setUser] = useState({});
 
-  // check that playerStats state is not empty else it will navugate back to add player two with an error
+  // check that playerStats state is not empty else it will navigate back to add player two with an error
   useEffect(() => {
-    const loggedUserId = userLogged["_id"];
-    axios.post('http://localhost:8000/api/new/player', {
-      user_id: loggedUserId,
-      favInfo: playerInfo
-    },
-      { withCredentials: true }
-    )
-    .then(response => {
-      console.log("Player added!");
+    // const loggedUserId = userLogged["_id"];
+    let userObj;
+    let playerObj = {};
+    axios.get('http://localhost:8000/api/user/', { withCredentials: true })
+    .then(user => {
+      console.log("User Obj");
 
-      // get the player object id so we can append it to user.players
-      const playerId = response.data.player.favInfo.id;
-      console.log("playerId");
-      console.log(playerId);
+      userObj = user;
+      console.log(userObj);
 
-      userLogged["playerIds"].push(playerId);
+      // get user players and append new player into it
+      let userPlayers = user.data.players;
+      console.log("user players:")
+      console.log(userPlayers);
 
-      const newPlayerIds = userLogged["playerIds"];
+      // convert local storage item into json object
+      let theInfo = JSON.parse(localStorage.getItem("playerInfoLocal"));
+      let theStats = JSON.parse(localStorage.getItem("playerStatsLocal"));
 
-      console.log("new players ids");
-      console.log(newPlayerIds);
+      playerObj["playerInfo"] = theInfo ;
+      playerObj["playerStats"] = theStats;
 
-      // insert the player id into the user players
-      axios.put(`http://localhost:8000/api/user/${loggedUserId}/update`, {
-        playerIds: newPlayerIds
+      console.log("playerObj:")
+      console.log(playerObj);
+
+      userPlayers.push(playerObj)
+      console.log("user id:")
+      let userId = userObj.data._id;
+
+      // put the new players into the user
+      axios.put(`http://localhost:8000/api/user/${userId}/update`, {
+        players: userPlayers
       }, { withCredentials: true })
       .then(response => {
         console.log("updated user:")
 
         console.log(response);
       })
+      .catch(error => {
+        console.log(`Could not add new player to user instance: ${error}`);
+      })
 
-      navigate("/favorite_players");
+      // navigate("/favorite_players");
+      navigate("/home");
     });
   });
 

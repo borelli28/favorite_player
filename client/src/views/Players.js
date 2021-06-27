@@ -10,14 +10,14 @@ export default () => {
   // when user clicks on remove button the id of the player is stored here so we can pass it in the route in the request
   const [idToDelete, setIdToDelete] = useState("");
 
-  if (getBool === false) {
-    setGetBool(true);
-    axios.get('http://localhost:8000/api/players', { withCredentials: true })
-      .then(res => {
-        setPlayers(res.data);
-      })
-      .catch(err => console.log(err));
-  }
+  // if (getBool === false) {
+  //   setGetBool(true);
+  //   axios.get('http://localhost:8000/api/players', { withCredentials: true })
+  //     .then(res => {
+  //       setPlayers(res.data);
+  //     })
+  //     .catch(err => console.log(err));
+  // }
 
   // redirect to add player page
   const addPlayer = () => {

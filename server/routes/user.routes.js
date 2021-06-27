@@ -7,14 +7,13 @@ require('dotenv').config();
 module.exports = function(app){
   app.get('/api', UserController.index);
 
-  app.post('/api/new/player', authenticate, UserController.createPlayer);
-  app.get('/api/players', authenticate, UserController.getAllPlayers);
-  app.delete('/api/player/:id/delete', authenticate, UserController.deletePlayer);
+  // app.post('/api/new/player', authenticate, UserController.createPlayer);
+  // app.get('/api/players', authenticate, UserController.getAllPlayers);
+  // app.delete('/api/player/:id/delete', authenticate, UserController.deletePlayer);
+  //
+  // app.delete('/api/delete/all/players', UserController.deleteAllPlayers);
 
-  app.delete('/api/delete/all/players', UserController.deleteAllPlayers);
-  app.delete('/api/delete/all/users', UserController.deleteAllUsers);
-
-  app.get('/api/user/', authenticate, UserController.getUser);
+  app.get('/api/user', authenticate, UserController.getUser);
   app.put('/api/user/:id/update', authenticate, UserController.updateUser);
   app.delete('/api/user/:id/delete', authenticate, UserController.deleteUser);
 
@@ -24,17 +23,5 @@ module.exports = function(app){
   app.post("/api/logout", UserController.logout);
   // this route now has to be authenticated
   app.get("/api/users", authenticate, UserController.getAllUser);
-
-  app.post('/test/send-cookie', authenticate, function(request, response) {
-    console.log("cookies sent:");
-
-    res = response.socket;
-
-    for (cookie in res._httpMessage.req.cookies) {
-      console.log("Cookie: " + cookie)
-      console.log("Value: " + res._httpMessage.req.cookies[cookie])
-    }
-
-    console.log("leaving send cookie route");
-  });
+  app.delete('/api/delete/all/users', UserController.deleteAllUsers);
 }

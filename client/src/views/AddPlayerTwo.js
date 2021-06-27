@@ -46,7 +46,12 @@ export default props => {
     const getData = async () => {
       await axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
       .then(res => {
+        console.log("playerTwo api response:");
+        console.log(res.data.sport_hitting_tm.queryResults.row)
+
+        localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.sport_hitting_tm.queryResults.row))
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
+        localStorage.setItem("playerInfoLocal", JSON.stringify({name:name, position:pos, id:id}))
         setPlayerInfo({name:name, position:pos, id:id});
 
         // check if the API returned the data else it will display an error to the user

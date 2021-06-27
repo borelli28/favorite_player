@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const PlayerSchema = new mongoose.Schema({
-  // name of the user that added this player
-  theUser: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  favInfo: { type: Object }
-}, { timestamps: true });
-module.exports.Player = mongoose.model('Player', PlayerSchema);
+// const PlayerSchema = new mongoose.Schema({
+//   favInfo: { type: Object }
+// }, { timestamps: true });
+// module.exports.Player = mongoose.model('Player', PlayerSchema);
 
 
 const UserSchema = new mongoose.Schema({
@@ -22,11 +20,10 @@ const UserSchema = new mongoose.Schema({
     minlength: [8, "Password must be 8 characters or longer"],
     trim: true
   },
-  playerIds: [
-    {
-      type: String
-    }
-  ]
+  players: {
+    type: [Object],
+    default: undefined
+  }
 }, {timestamps: true});
 
   // use mongoose virtual to compare confirm password with password since confirm password is not save to the DB
