@@ -1,4 +1,4 @@
-import '../stylesheets/navStyle.css';
+import '../stylesheets/homeStyle.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { navigate } from "@reach/router";
@@ -73,7 +73,7 @@ export default () => {
         <label htmlFor="confirm-password">Confirm Password:</label>
         <input type="password" name="confirm-password" onChange={(event) => { setConfirmPassword(event.target.value) }} required/>
 
-        <button className="btn btn-light" type="submit" id="login-btn">Register</button>
+        <button className="btn btn-primary" type="submit" id="login-btn">Register</button>
       </form>
     </div>
   )

@@ -27,11 +27,11 @@ export default props => {
           (regForm
             ? <div>
                 <Register />
-                <button className="btn btn-light" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
+                <button className="btn btn-secondary" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
               </div>
             : <div>
                 <Login userLogged={userLogged} setUserLogged={setUserLogged}/>
-                <button className="btn btn-light" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
+                <button className="btn btn-secondary" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
               </div>
           )
         }
@@ -44,11 +44,11 @@ export default props => {
           (regForm
             ? <div>
                 <Register />
-                <button className="btn btn-light" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
+                <button className="btn btn-secondary" onClick={(event) => { setRegForm(false) }}>Go to Login Form</button>
               </div>
             : <div>
                 <Login userLogged={userLogged} setUserLogged={setUserLogged}/>
-                <button className="btn btn-light" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
+                <button className="btn btn-secondary" onClick={(event) => { setRegForm(true) }}>or Register Here</button>
               </div>
           )
         }

@@ -40,7 +40,7 @@ export default props => {
         <label htmlFor="password">Password:</label>
         <input type="password" name="password" onChange={(event) => { setPassword(event.target.value) }} required/>
 
-        <button className="btn btn-light" type="submit" id="login-btn">Login</button>
+        <button className="btn btn-primary" type="submit" id="login-btn">Login</button>
       </form>
     </div>
   )

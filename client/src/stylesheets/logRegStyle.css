@@ -5,3 +5,7 @@
 #val-msg {
   color: red;
 }
+
+#desktop, #mobile {
+  font-size: 1.5rem;
+}
