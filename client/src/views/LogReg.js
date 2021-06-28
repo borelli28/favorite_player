@@ -1,7 +1,6 @@
 import '../stylesheets/homeStyle.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Nav from '../components/Nav';
 import Login from '../components/Login';
 import Register from '../components/Register';
 
@@ -24,7 +23,6 @@ export default props => {
   if (width > 750) {
     return (
       <div id="desktop">
-        <Nav />
         {
           (regForm
             ? <div>
@@ -42,7 +40,6 @@ export default props => {
   } else {
     return (
       <div id="desktop">
-        <Nav />
         {
           (regForm
             ? <div>

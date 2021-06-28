@@ -16,8 +16,7 @@ export default () => {
   }
 
   const logout = () => {
-    console.log("in logout method");
-    axios.post('http://localhost:8000/api/logout', {  withCredentials: true})
+    axios.get('http://localhost:8000/api/logout')
     .then(response => {
       console.log("user logout");
       console.log(response);

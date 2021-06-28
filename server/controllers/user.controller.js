@@ -14,8 +14,21 @@ module.exports.index = (request, response) => {
   });
 }
 module.exports.logout = (request, response) => {
-  process.env.LOGGED_USER_ID = null;
-  response.status(200).clearCookie("usertoken").send(response);
+  try {
+    console.log("in try logout");
+    process.env.LOGGED_USER_ID = null;
+    console.log("userid nullified");
+    response.cookie('usertoken', "loggin out", process.env.SECRET_KEY, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 5 * 1000) // expires in seconds
+    });
+    console.log("cookie expire in 1 second");
+    // clearCookie("usertoken")
+    response.status(200).json({ success: true, message: 'User logged out successfully' })
+    console.log("response sent");
+  } catch(error) {
+    response.status(500).json(error);
+  }
 }
 
 module.exports.createUser = async (request, response) => {
@@ -34,7 +47,9 @@ module.exports.createUser = async (request, response) => {
         console.log("cookie thingy");
         // name of cookie, cookie value, secret key, httponly(dont show to javascript)
         response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
-          httpOnly: true
+          httpOnly: true,
+          maxAge: 7200000, // two hours
+          secure: false // change to true if using https
         });
         console.log("user created:")
         console.log(user)
@@ -85,7 +100,9 @@ module.exports.login = async(request, response) => {
 
   // name of cookie, cookie value, secret key, httponly(dont show to javascript)
   response.cookie('usertoken', userToken, process.env.SECRET_KEY, {
-    httpOnly: true
+    httpOnly: true,
+    maxAge: 7200000, // two hours
+    secure: false // change to true if using https
   });
   response.send("Cookie created: " + userToken);
 
