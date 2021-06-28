@@ -46,14 +46,17 @@ export default props => {
           setPlayers(user.data.players);
           console.log("New stats requested");
         })
-        .catch(err => console.log(err))
+        .catch(error => {
+          console.log(error.response.status);
+          if (error.response.status == 401) {
+            navigate('/')
+            window.location.reload();
+          }
+        })
       }
 
     });
   },[])
-
-  console.log("The Players:")
-  console.log(players);
 
   // deletes all data in the database
   const wipeDBClean = () => {
@@ -72,7 +75,6 @@ export default props => {
       <div id="desktop">
         <Nav />
         <h1>My Players</h1>
-        <button className="btn btn-danger" onClick={ wipeDBClean }> wipe all data from db</button>
         <div id="table-container">
           <table className="table table-hover" id="table">
             <thead>
@@ -128,34 +130,34 @@ export default props => {
       <div id="small-mobile">
         <Nav />
         <h1>My Players</h1>
-<div>
-  {
-    (players
-      ? players.map((player, idx) => {
-        return (
-          <div key={idx}>
-            <h4>{ player.playerInfo.name }</h4>
-            <ul className="list-group">
-              <li className="list-group-item">Team: <span>{ player.playerStats.team_full }</span></li>
-              <li className="list-group-item">Position: <span>{ player.playerInfo.position }</span></li>
-              <li className="list-group-item">At Bats: <span>{ player.playerStats.ab }</span></li>
-              <li className="list-group-item">Hits: <span>{ player.playerStats.h }</span></li>
-              <li className="list-group-item">Total Bases: <span>{ player.playerStats.tb }</span></li>
-              <li className="list-group-item">On Base %: <span>{ player.playerStats.obp }</span></li>
-              <li className="list-group-item">Runs Batted In: <span>{ player.playerStats.rbi }</span></li>
-              <li className="list-group-item">Strike Outs: <span>{ player.playerStats.so }</span></li>
-              <li className="list-group-item">Runs: <span>{ player.playerStats.r }</span></li>
-              <li className="list-group-item">Home Runs: <span>{ player.playerStats.hr }</span></li>
-              <li className="list-group-item">Stolen Bases: <span>{ player.playerStats.sb }</span></li>
-              <li className="list-group-item">Caught Stealing: <span>{ player.playerStats.cs }</span></li>
-            </ul>
+          <div>
+            {
+              (players
+                ? players.map((player, idx) => {
+                  return (
+                    <div key={idx}>
+                      <h4>{ player.playerInfo.name }</h4>
+                      <ul className="list-group">
+                        <li className="list-group-item">Team: <span>{ player.playerStats.team_full }</span></li>
+                        <li className="list-group-item">Position: <span>{ player.playerInfo.position }</span></li>
+                        <li className="list-group-item">At Bats: <span>{ player.playerStats.ab }</span></li>
+                        <li className="list-group-item">Hits: <span>{ player.playerStats.h }</span></li>
+                        <li className="list-group-item">Total Bases: <span>{ player.playerStats.tb }</span></li>
+                        <li className="list-group-item">On Base %: <span>{ player.playerStats.obp }</span></li>
+                        <li className="list-group-item">Runs Batted In: <span>{ player.playerStats.rbi }</span></li>
+                        <li className="list-group-item">Strike Outs: <span>{ player.playerStats.so }</span></li>
+                        <li className="list-group-item">Runs: <span>{ player.playerStats.r }</span></li>
+                        <li className="list-group-item">Home Runs: <span>{ player.playerStats.hr }</span></li>
+                        <li className="list-group-item">Stolen Bases: <span>{ player.playerStats.sb }</span></li>
+                        <li className="list-group-item">Caught Stealing: <span>{ player.playerStats.cs }</span></li>
+                      </ul>
+                    </div>
+                  )
+                })
+              : "NO DATA"
+              )
+            }
           </div>
-        )
-      })
-    : "NO DATA"
-    )
-  }
-</div>
       </div>
     )
 

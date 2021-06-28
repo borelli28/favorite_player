@@ -2,6 +2,7 @@ import '../stylesheets/logRegStyle.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { navigate } from "@reach/router";
+import {Redirect} from 'react-router-dom';
 
 export default props => {
   const [username, setUsername] = useState("");
@@ -21,6 +22,7 @@ export default props => {
     .then(response => {
       console.log(response)
       navigate('/home')
+      window.location.reload();
     })
     .catch(error => {
       console.log(error.response.data.message);

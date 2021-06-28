@@ -22,6 +22,7 @@ export default () => {
       console.log("registration response:");
       console.log(response);
       navigate('/home')
+      window.location.reload();
     })
     .catch(error => {
       // if error returned is longer than 4 that means there only one object returned wich is: {errors: "Username exist, pick another one"}. Instead of an array with errors

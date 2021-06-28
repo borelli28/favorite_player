@@ -16,11 +16,16 @@ export default () => {
     // get the user object from the server
     axios.get('http://localhost:8000/api/user/', { withCredentials: true })
     .then(user => {
-      console.log("User:");
-      console.log(user.data);
       setUser(user.data);
       setPlayers(user.data.players);
-    });
+    })
+    .catch(error => {
+      console.log(error.response.status);
+      if (error.response.status == 401) {
+        navigate('/')
+        window.location.reload();
+      }
+    })
   },[])
 
   // redirect to add player page

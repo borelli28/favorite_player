@@ -70,8 +70,6 @@ module.exports.createUser = async (request, response) => {
   }
 }
 module.exports.login = async(request, response) => {
-  console.log("inside login method in controller");
-
   // find user by username
   const user = await User.findOne({ username: request.body.username });
   console.log("user:");
@@ -83,7 +81,6 @@ module.exports.login = async(request, response) => {
     return response.status(400).json({message: "Username not found"});
   }
 
-  // if we made it this far, we found a user with this username
   // let's compare the supplied password to the hashed password in the database
   const correctPassword = await bcrypt.compare(request.body.password, user.password);
 
@@ -104,9 +101,7 @@ module.exports.login = async(request, response) => {
     maxAge: 7200000, // two hours
     secure: false // change to true if using https
   });
-  response.send("Cookie created: " + userToken);
-
-  console.log("leaving login method");
+  response.send("Cookie created");
 }
 module.exports.getUser = (request, response) => {
   User.findOne({_id: process.env.LOGGED_USER_ID })
