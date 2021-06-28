@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   },
   players: {
     type: [Object],
-    default: undefined
+    default: []
   }
 }, {timestamps: true});
 

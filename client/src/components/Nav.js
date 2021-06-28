@@ -16,11 +16,17 @@ export default () => {
   }
 
   const logout = () => {
-    axios.post('http://localhost:8000/api/logout')
-      .then(res => {
-        console.log("user logout");
-        console.log(res);
-      })
+    console.log("in logout method");
+    axios.post('http://localhost:8000/api/logout', {  withCredentials: true})
+    .then(response => {
+      console.log("user logout");
+      console.log(response);
+      navigate('/')
+    })
+    .catch(error => {
+      console.log("Logout failed")
+      console.log(error.response)
+    })
   }
 
   return (

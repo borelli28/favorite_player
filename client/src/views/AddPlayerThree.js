@@ -12,6 +12,7 @@ export default props => {
 
     let userObj;
     let playerObj = {};
+    let userPlayers;
     axios.get('http://localhost:8000/api/user/', { withCredentials: true })
     .then(user => {
       console.log("User Obj");
@@ -20,7 +21,7 @@ export default props => {
       console.log(userObj);
 
       // get user players and append new player into it
-      let userPlayers = user.data.players;
+      userPlayers = user.data.players;
       console.log("user players:")
       console.log(userPlayers);
 

@@ -13,6 +13,10 @@ module.exports.index = (request, response) => {
     message: "Hello World"
   });
 }
+module.exports.logout = (request, response) => {
+  process.env.LOGGED_USER_ID = null;
+  response.status(200).clearCookie("usertoken").send(response);
+}
 
 module.exports.createUser = async (request, response) => {
   // check that username does not exist yet
@@ -86,11 +90,6 @@ module.exports.login = async(request, response) => {
   response.send("Cookie created: " + userToken);
 
   console.log("leaving login method");
-}
-module.exports.logout = (request, response) => {
-  response.clearCookie("usertoken");
-  response.sendStatus(200);
-  response.json({ msg: "Auth cookie deleted!" })
 }
 module.exports.getUser = (request, response) => {
   User.findOne({_id: process.env.LOGGED_USER_ID })

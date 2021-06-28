@@ -82,7 +82,7 @@ export default () => {
                   </tr>
                 )
               })
-              : "No data"
+              : ""
               )
             }
           </tbody>

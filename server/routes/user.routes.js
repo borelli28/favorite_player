@@ -14,7 +14,7 @@ module.exports = function(app){
   app.post("/api/register", UserController.createUser);
   app.post("/api/login", UserController.login);
 
-  app.post("/api/logout", UserController.logout);
+  app.post("/api/logout", authenticate, UserController.logout);
   // this route now has to be authenticated
   app.get("/api/users", authenticate, UserController.getAllUser);
   app.delete('/api/delete/all/users', UserController.deleteAllUsers);
