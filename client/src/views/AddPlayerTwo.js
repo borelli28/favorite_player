@@ -33,7 +33,6 @@ export default props => {
   } else {
     useEffect(() => {
       localStorage.setItem("playerInfoTemp", JSON.stringify(playerInfo))
-      // console.log("playerInfo saved in local storage");
     }, [playerInfo])
   }
 
@@ -46,8 +45,6 @@ export default props => {
     const getData = async () => {
       await axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
       .then(res => {
-        console.log("playerTwo api response:");
-        console.log(res.data.sport_hitting_tm.queryResults.row)
 
         localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.sport_hitting_tm.queryResults.row))
         setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
@@ -61,7 +58,6 @@ export default props => {
           }
         } catch {
           // the data returned by the API is empty so we redirect to playerNotAvailable page
-          // console.log("This Player information is not available at this moment");
           navigate("/playerNotAvailable");
         }
       })

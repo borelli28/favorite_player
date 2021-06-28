@@ -19,7 +19,6 @@ export default () => {
     axios.get('http://localhost:8000/api/logout')
     .then(response => {
       console.log("user logout");
-      console.log(response);
       navigate('/')
     })
     .catch(error => {

@@ -36,7 +36,6 @@ function App() {
     })
 
   }, [])
-  console.log(userAuth);
 
   if (userAuth) {
     return (

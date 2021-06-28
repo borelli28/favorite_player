@@ -20,7 +20,6 @@ export default props => {
       password: password
     }, { withCredentials: true })
     .then(response => {
-      console.log(response)
       navigate('/home')
       window.location.reload();
     })

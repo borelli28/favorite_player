@@ -24,19 +24,15 @@ export default props => {
 
   useEffect(() => {
 
-    // clears out the players in the hook to fix duplicates players bug
+    // clears out the players in the state to fix duplicates players bug
     setPlayers([]);
 
     // get the user object from the server
     axios.get('http://localhost:8000/api/user/', { withCredentials: true })
     .then(user => {
-      console.log("User:");
-      console.log(user.data);
       setUserLogged(user.data)
-      // setPlayers(user.data.players);
 
       for (let i in user.data.players) {
-        // console.log(user.data.players[i])
         let playerId = user.data.players[i].playerInfo.id;
 
         // now get fresh stats data from the API, and PUT them in the user players object
@@ -44,7 +40,6 @@ export default props => {
         .then(res => {
           user.data.players[i].playerStats = res.data.sport_hitting_tm.queryResults.row;
           setPlayers(user.data.players);
-          console.log("New stats requested");
         })
         .catch(error => {
           console.log(error.response.status);
@@ -57,18 +52,6 @@ export default props => {
 
     });
   },[])
-
-  // deletes all data in the database
-  const wipeDBClean = () => {
-
-    axios.delete('http://localhost:8000/api/delete/all/users', { withCredentials: true })
-      .then(res => {
-        console.log("And its...gone!")
-        navigate('/')
-      })
-      .catch(err => console.log("the data could not be deleted: " + err))
-
-  }
 
   if (width > 750) {
     return (

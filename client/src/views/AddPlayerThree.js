@@ -15,16 +15,11 @@ export default props => {
     let userPlayers;
     axios.get('http://localhost:8000/api/user/', { withCredentials: true })
     .then(user => {
-      console.log("User Obj");
 
       userObj = user;
-      console.log(userObj);
 
       // get user players and append new player into it
       userPlayers = user.data.players;
-      console.log("user players:")
-      console.log(userPlayers);
-
       // convert local storage item into json object
       let theInfo = JSON.parse(localStorage.getItem("playerInfoLocal"));
       let theStats = JSON.parse(localStorage.getItem("playerStatsLocal"));
@@ -32,11 +27,8 @@ export default props => {
       playerObj["playerInfo"] = theInfo ;
       playerObj["playerStats"] = theStats;
 
-      console.log("playerObj:")
-      console.log(playerObj);
-
       userPlayers.push(playerObj)
-      console.log("user id:")
+
       let userId = userObj.data._id;
 
       // put the new players into the user
@@ -44,9 +36,7 @@ export default props => {
         players: userPlayers
       }, { withCredentials: true })
       .then(response => {
-        console.log("updated user:")
 
-        console.log(response);
       })
       .catch(error => {
         console.log(`Could not add new player to user instance: ${error}`);

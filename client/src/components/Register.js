@@ -19,8 +19,6 @@ export default () => {
       confirmPassword
     }, { withCredentials: true })
     .then(response => {
-      console.log("registration response:");
-      console.log(response);
       navigate('/home')
       window.location.reload();
     })
@@ -35,12 +33,8 @@ export default () => {
       } else {
         for (let i in error.response.data.errors) {
           // get error array and put the new error
-          console.log("error:")
-          console.log(error.response.data.errors[i]);
           newErrors.push(error.response.data.errors[i].message);
           setValErrors(newErrors);
-          console.log("newErrors set");
-          console.log(valErrors);
         }
       }
 
