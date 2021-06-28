@@ -9,7 +9,7 @@ module.exports = function(app){
 
   app.get('/api/user', authenticate, UserController.getUser);
   app.put('/api/user/:id/update', authenticate, UserController.updateUser);
-  app.delete('/api/user/:id/delete', authenticate, UserController.deleteUser);
+  // app.delete('/api/user/:id/delete', authenticate, UserController.deleteUser);
 
   app.post("/api/register", UserController.createUser);
   app.post("/api/login", UserController.login);
@@ -17,5 +17,5 @@ module.exports = function(app){
   app.get("/api/logout", UserController.logout);
   // this route now has to be authenticated
   app.get("/api/users", authenticate, UserController.getAllUser);
-  app.delete('/api/delete/all/users', UserController.deleteAllUsers);
+  // app.delete('/api/delete/all/users', UserController.deleteAllUsers);
 }
