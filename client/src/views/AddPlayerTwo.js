@@ -49,15 +49,15 @@ export default props => {
         console.log("API Response: ")
         console.log(res)
         console.log("Player Data:")
-        console.log(res.data.player_info.queryResults.row)
-        // localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.player_info.queryResults.row))
-        // setPlayerStats(res.data.player_info.queryResults.row);
+        console.log(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1].stat)
+        localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1].stat))
+        setPlayerStats(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1].stat);
         localStorage.setItem("playerInfoLocal", JSON.stringify({name:name, position:pos, id:id}))
         setPlayerInfo({name:name, position:pos, id:id});
 
         // check if the API returned the data else it will display an error to the user
         try {
-          if (res.data.player_info.queryResults.row.age.length > 0) {
+          if (res.data.people.length > 0) {
             navigate("/addPlayer/3");
           }
         } catch {
