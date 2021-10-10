@@ -36,17 +36,20 @@ export default props => {
         let playerId = user.data.players[i].playerInfo.id;
 
         // now get fresh stats data from the API, and PUT them in the user players object
-        axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${playerId}'`)
+        axios.get(`https://statsapi.mlb.com/api/v1/people/545361?hydrate=currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)&site=en`)
         .then(res => {
-          user.data.players[i].playerStats = res.data.sport_hitting_tm.queryResults.row;
-          setPlayers(user.data.players);
+          console.log("API response: ")
+          console.log(res)
+          // user.data.players[i].playerStats = res.data.player_info.queryResults.row;
+          // setPlayers(user.data.players);
         })
         .catch(error => {
-          console.log(error.response.status);
-          if (error.response.status == 401) {
-            navigate('/')
-            window.location.reload();
-          }
+          console.log(error)
+          // console.log(error.response.status);
+          // if (error.response.status == 401) {
+          //   navigate('/')
+          //   window.location.reload();
+          // }
         })
       }
 

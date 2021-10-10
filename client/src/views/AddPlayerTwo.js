@@ -44,12 +44,14 @@ export default props => {
 
     const getData = async () => {
       console.log("Player id: " + id)
-      await axios.get(`http://lookup-service-prod.mlb.com/json/named.player_info.bam?sport_code='mlb'&player_id='${id}'`)
+      await axios.get(`https://statsapi.mlb.com/api/v1/people/${id}?hydrate=currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)&site=en`)
       .then(res => {
         console.log("API Response: ")
         console.log(res)
-        localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.player_info.queryResults.row))
-        setPlayerStats(res.data.player_info.queryResults.row);
+        console.log("Player Data:")
+        console.log(res.data.player_info.queryResults.row)
+        // localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.player_info.queryResults.row))
+        // setPlayerStats(res.data.player_info.queryResults.row);
         localStorage.setItem("playerInfoLocal", JSON.stringify({name:name, position:pos, id:id}))
         setPlayerInfo({name:name, position:pos, id:id});
 

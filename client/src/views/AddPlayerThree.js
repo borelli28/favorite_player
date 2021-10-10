@@ -36,7 +36,7 @@ export default props => {
         players: userPlayers
       }, { withCredentials: true })
       .then(response => {
-
+        console.log(response)
       })
       .catch(error => {
         console.log(`Could not add new player to user instance: ${error}`);
