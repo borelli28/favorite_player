@@ -36,12 +36,12 @@ export default props => {
         let playerId = user.data.players[i].playerInfo.id;
 
         // now get fresh stats data from the API, and PUT them in the user players object
-        axios.get(`https://statsapi.mlb.com/api/v1/people/545361?hydrate=currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)&site=en`)
+        axios.get(`https://statsapi.mlb.com/api/v1/people/${playerId}?hydrate=currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)&site=en`)
         .then(res => {
           console.log("API response: ")
-          console.log(res)
-          // user.data.players[i].playerStats = res.data.player_info.queryResults.row;
-          // setPlayers(user.data.players);
+          console.log(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1])
+          user.data.players[i].playerStats = res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1];
+          setPlayers(user.data.players);
         })
         .catch(error => {
           console.log(error)
@@ -55,6 +55,9 @@ export default props => {
 
     });
   },[])
+
+  console.log("players:")
+  console.log(players)
 
   if (width > 750) {
     return (
@@ -84,21 +87,23 @@ export default props => {
               {
                 (players
                   ? players.map((player, idx) => {
+                    console.log("individual player")
+                    console.log(player)
                     return (
                       <tr key={idx}>
-                        <td>{ player.playerStats.team_full }</td>
+                        <td>{ player.playerStats.team.name }</td>
                         <td>{ player.playerInfo.name }</td>
                         <td>{ player.playerInfo.position }</td>
-                        <td>{ player.playerStats.ab }</td>
-                        <td>{ player.playerStats.h }</td>
-                        <td>{ player.playerStats.tb }</td>
-                        <td>{ player.playerStats.obp }</td>
-                        <td>{ player.playerStats.rbi }</td>
-                        <td>{ player.playerStats.so }</td>
-                        <td>{ player.playerStats.r }</td>
-                        <td>{ player.playerStats.hr }</td>
-                        <td>{ player.playerStats.sb }</td>
-                        <td>{ player.playerStats.cs }</td>
+                        <td>{ player.playerStats.stat.atBats }</td>
+                        <td>{ player.playerStats.stat.hits }</td>
+                        <td>{ player.playerStats.stat.totalBases }</td>
+                        <td>{ player.playerStats.stat.obp }</td>
+                        <td>{ player.playerStats.stat.rbi }</td>
+                        <td>{ player.playerStats.stat.strikeOuts }</td>
+                        <td>{ player.playerStats.stat.runs }</td>
+                        <td>{ player.playerStats.stat.homeRuns }</td>
+                        <td>{ player.playerStats.stat.stolenBases }</td>
+                        <td>{ player.playerStats.stat.caughtStealing }</td>
                       </tr>
                     )
                   })
