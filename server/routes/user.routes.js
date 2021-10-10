@@ -17,5 +17,5 @@ module.exports = function(app){
   app.get("/api/logout", UserController.logout);
   // this route now has to be authenticated
   app.get("/api/users", authenticate, UserController.getAllUser);
-  // app.delete('/api/delete/all/users', UserController.deleteAllUsers);
+  app.delete('/api/delete/all/users', UserController.deleteAllUsers);
 }

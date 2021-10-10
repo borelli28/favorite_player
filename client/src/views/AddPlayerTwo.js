@@ -43,17 +43,19 @@ export default props => {
     localStorage.setItem("playerInfoTemp", undefined);
 
     const getData = async () => {
-      await axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam/json/named.sport_hitting_tm.bam?league_list_id='mlb'&game_type='R'&season='2021'&player_id='${id}'`)
+      console.log("Player id: " + id)
+      await axios.get(`http://lookup-service-prod.mlb.com/json/named.player_info.bam?sport_code='mlb'&player_id='${id}'`)
       .then(res => {
-
-        localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.sport_hitting_tm.queryResults.row))
-        setPlayerStats(res.data.sport_hitting_tm.queryResults.row);
+        console.log("API Response: ")
+        console.log(res)
+        localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.player_info.queryResults.row))
+        setPlayerStats(res.data.player_info.queryResults.row);
         localStorage.setItem("playerInfoLocal", JSON.stringify({name:name, position:pos, id:id}))
         setPlayerInfo({name:name, position:pos, id:id});
 
         // check if the API returned the data else it will display an error to the user
         try {
-          if (res.data.sport_hitting_tm.queryResults.row.sport.length > 0) {
+          if (res.data.player_info.queryResults.row.age.length > 0) {
             navigate("/addPlayer/3");
           }
         } catch {
@@ -62,6 +64,7 @@ export default props => {
         }
       })
       .catch(err => {
+        console.log("some error happend while request data from API")
         console.log(err);
       });
     }
