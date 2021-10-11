@@ -63,7 +63,7 @@ export default props => {
         <Nav />
         <h1>My Players</h1>
         <div id="table-container">
-          <table className="table table-hover" id="table">
+          <table className="table table-hover" id="hitters-table">
             <thead>
               <tr>
                 <th>Team</th>
@@ -85,23 +85,72 @@ export default props => {
               {
                 (players
                   ? players.map((player, idx) => {
-                    return (
-                      <tr key={idx}>
-                        <td>{ player.playerStats.team.name }</td>
-                        <td>{ player.playerInfo.name }</td>
-                        <td>{ player.playerInfo.position }</td>
-                        <td>{ player.playerStats.stat.atBats }</td>
-                        <td>{ player.playerStats.stat.hits }</td>
-                        <td>{ player.playerStats.stat.totalBases }</td>
-                        <td>{ player.playerStats.stat.obp }</td>
-                        <td>{ player.playerStats.stat.rbi }</td>
-                        <td>{ player.playerStats.stat.strikeOuts }</td>
-                        <td>{ player.playerStats.stat.runs }</td>
-                        <td>{ player.playerStats.stat.homeRuns }</td>
-                        <td>{ player.playerStats.stat.stolenBases }</td>
-                        <td>{ player.playerStats.stat.caughtStealing }</td>
-                      </tr>
-                    )
+                    if (player.playerInfo.position !== "P") {
+                      return (
+                        <tr key={idx}>
+                          <td>{ player.playerStats.team.name }</td>
+                          <td>{ player.playerInfo.name }</td>
+                          <td>{ player.playerInfo.position }</td>
+                          <td>{ player.playerStats.stat.atBats }</td>
+                          <td>{ player.playerStats.stat.hits }</td>
+                          <td>{ player.playerStats.stat.totalBases }</td>
+                          <td>{ player.playerStats.stat.obp }</td>
+                          <td>{ player.playerStats.stat.rbi }</td>
+                          <td>{ player.playerStats.stat.strikeOuts }</td>
+                          <td>{ player.playerStats.stat.runs }</td>
+                          <td>{ player.playerStats.stat.homeRuns }</td>
+                          <td>{ player.playerStats.stat.stolenBases }</td>
+                          <td>{ player.playerStats.stat.caughtStealing }</td>
+                        </tr>
+                      )
+                    }
+                  })
+                : "NO DATA"
+                )
+              }
+            </tbody>
+          </table>
+        </div>
+        <div id="table-container">
+          <table className="table table-hover" id="pitchers-table">
+            <thead>
+              <tr>
+                <th>Team</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>G</th>
+                <th>Total Batters</th>
+                <th>H</th>
+                <th>IP</th>
+                <th>ERA</th>
+                <th>TB</th>
+                <th>OBP</th>
+                <th>SO</th>
+                <th>WHIP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                (players
+                  ? players.map((player, idx) => {
+                    if (player.playerInfo.position == "P") {
+                      return (
+                        <tr key={idx}>
+                          <td>{ player.playerStats.team.name }</td>
+                          <td>{ player.playerInfo.name }</td>
+                          <td>{ player.playerInfo.position }</td>
+                          <td>{ player.playerStats.stat.gamesPlayed }</td>
+                          <td>{ player.playerStats.stat.battersFaced }</td>
+                          <td>{ player.playerStats.stat.hits }</td>
+                          <td>{ player.playerStats.stat.inningsPitched }</td>
+                          <td>{ player.playerStats.stat.era }</td>
+                          <td>{ player.playerStats.stat.totalBases }</td>
+                          <td>{ player.playerStats.stat.obp }</td>
+                          <td>{ player.playerStats.stat.strikeOuts }</td>
+                          <td>{ player.playerStats.stat.whip }</td>
+                        </tr>
+                      )
+                    }
                   })
                 : "NO DATA"
                 )

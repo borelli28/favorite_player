@@ -19,6 +19,7 @@ div {
   display: flex;
   justify-content: center;
   background-color: white;
+  margin: 1% 0;
 }
 
   #table-container #table {
