@@ -50,6 +50,8 @@ export default props => {
           //   navigate('/')
           //   window.location.reload();
           // }
+            navigate('/')
+            window.location.reload();
         })
       }
 

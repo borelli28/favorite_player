@@ -14,6 +14,8 @@ export default props => {
     event.preventDefault();
     axios.get(`http://lookup-service-prod.mlb.com/json/named.search_player_all.bam?sport_code='mlb'&active_sw='Y'&name_part='${tempName}%25'`)
       .then(res => {
+        console.log("Add Player One API response:")
+        console.log(res)
         try {
           if (res.data.search_player_all.queryResults.row != undefined) {
             setPlayerInfo(res.data.search_player_all.queryResults.row);

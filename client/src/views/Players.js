@@ -77,7 +77,7 @@ export default () => {
                 return (
                   <tr key={idx}>
                     <td>{ player.playerInfo.name }</td>
-                    <td>{ player.playerStats.team_full }</td>
+                    <td>{ player.playerStats.season }</td>
                     <td>{ player.playerInfo.position }</td>
                     <td>
                       <form onSubmit={ deletePlayer }>

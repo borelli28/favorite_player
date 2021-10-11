@@ -49,9 +49,9 @@ export default props => {
         console.log("API Response: ")
         console.log(res)
         console.log("Player Data:")
-        console.log(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1].stat)
-        localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1].stat))
-        setPlayerStats(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1].stat);
+        console.log(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1])
+        localStorage.setItem("playerStatsLocal", JSON.stringify(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1]))
+        setPlayerStats(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1]);
         localStorage.setItem("playerInfoLocal", JSON.stringify({name:name, position:pos, id:id}))
         setPlayerInfo({name:name, position:pos, id:id});
 
@@ -66,7 +66,7 @@ export default props => {
         }
       })
       .catch(err => {
-        console.log("some error happend while request data from API")
+        console.log("some error happend while requesting data from API")
         console.log(err);
       });
     }

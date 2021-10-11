@@ -36,6 +36,7 @@ export default props => {
         players: userPlayers
       }, { withCredentials: true })
       .then(response => {
+        console.log("Player added to user. Now returning the server response")
         console.log(response)
       })
       .catch(error => {
