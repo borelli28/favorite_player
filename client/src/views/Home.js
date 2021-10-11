@@ -38,28 +38,24 @@ export default props => {
         // now get fresh stats data from the API, and PUT them in the user players object
         axios.get(`https://statsapi.mlb.com/api/v1/people/${playerId}?hydrate=currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)&site=en`)
         .then(res => {
-          console.log("API response: ")
-          console.log(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1])
+          // console.log("API response: ")
+          // console.log(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1])
           user.data.players[i].playerStats = res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1];
           setPlayers(user.data.players);
         })
         .catch(error => {
           console.log(error)
-          // console.log(error.response.status);
-          // if (error.response.status == 401) {
-          //   navigate('/')
-          //   window.location.reload();
-          // }
+          console.log(error.response.status);
+          if (error.response.status == 401) {
             navigate('/')
             window.location.reload();
+          }
         })
       }
 
     });
   },[])
 
-  console.log("players:")
-  console.log(players)
 
   if (width > 750) {
     return (
@@ -89,8 +85,6 @@ export default props => {
               {
                 (players
                   ? players.map((player, idx) => {
-                    console.log("individual player")
-                    console.log(player)
                     return (
                       <tr key={idx}>
                         <td>{ player.playerStats.team.name }</td>
