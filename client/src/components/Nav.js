@@ -36,6 +36,9 @@ export default () => {
         <li>
           <button className="btn btn-light" onClick={ redirectPlayers }>Players</button>
         </li>
+        <li id="win-predictor">
+          <button className="btn btn-light" onClick={ redirectHome }>Who will win?</button>
+        </li>
         <li>
           <button className="btn btn-light" onClick={ logout }>Logout</button>
         </li>

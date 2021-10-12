@@ -13,7 +13,7 @@
   background-color: #EF3340;
 }
 
-  #nav button {
-    padding: 25%;
-    color: #EF3340;
-  }
+#nav button {
+  width: 100%;
+  color: #EF3340;
+}
