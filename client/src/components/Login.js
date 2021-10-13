@@ -24,8 +24,14 @@ export default props => {
       window.location.reload();
     })
     .catch(error => {
-      console.log(error.response.data.message);
-      setValErrors(error.response.data.message);
+      try {
+        console.log(error.response.data.message);
+        setValErrors(error.response.data.message);
+      } catch {
+        console.log(error)
+        navigate("/")
+      }
+
     })
   }
 

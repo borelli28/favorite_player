@@ -4,9 +4,13 @@ import { navigate } from "@reach/router";
 import axios from 'axios';
 import Nav from '../components/Nav';
 
-export default () => {
+export default props => {
+  const { alert, setAlert } = props;
+
   const [user, setUser] = useState();
   const [players, setPlayers] = useState([]);
+
+
 
   // used by deletePlayer method
   const [idToDelete, setIdToDelete] = useState("");
@@ -57,9 +61,34 @@ export default () => {
 
   }
 
+  const clearAlert = () => {
+    event.preventDefault();
+    setAlert([]);
+  }
+
   return (
     <div>
       <Nav />
+      <div id="submission-alerts">
+      {
+        (alert
+          ? alert.map((alert, idx) => {
+            return (
+              // need to wrap alerts in a div else when trying to submit a new message after closing the alert will throw:
+              // Failed to execute 'removeChild' on 'Node'. Error
+              <div id="failed-alert-container">
+                <div className="alert alert-warning alert-dismissible fade show" role="alert">
+                  <label key={idx}>{ alert }</label>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={clearAlert}>X</button>
+                </div>
+              </div>
+            )
+          })
+        :
+          ""
+        )
+      }
+      </div>
       <div id="table-container">
         <table className="table table-strip table-hover" id="table">
           <thead>

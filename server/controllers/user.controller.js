@@ -131,7 +131,13 @@ module.exports.updateUser = (request, response) => {
                         // new: true -> make the function return the updated object: https://mongoosejs.com/docs/tutorials/findoneandupdate.html
     User.findOneAndUpdate({_id: request.params.id}, request.body, {new:true})
         .then(updatedUser => response.json(updatedUser))
-        .catch(err => response.json(err))
+        .catch(err => {
+          console.log("error returned by updateUser()")
+          console.log(err)
+          response.json(err)
+          console.log("response:")
+          console.log(response)
+        })
 }
 module.exports.deleteUser = (request, response) => {
     User.deleteOne({ _id: request.params.id })

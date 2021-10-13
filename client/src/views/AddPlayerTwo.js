@@ -8,6 +8,8 @@ export default props => {
   const { playerInfo, setPlayerInfo } = props;
   const { playerStats, setPlayerStats } = props;
   const {id, setId} = props;
+  const { setAlert } = props;
+
   // Selected player, Full name, Position & ID
   const [name, setName] = useState("");
   const [pos, setPos] = useState("");
@@ -39,6 +41,9 @@ export default props => {
   const submitHandler = (event) => {
     event.preventDefault();
 
+    // clear previous alerts
+    setAlert([])
+
     // resets localStorage
     localStorage.setItem("playerInfoTemp", undefined);
 
@@ -58,7 +63,45 @@ export default props => {
         // check if the API returned the data else it will display an error to the user
         try {
           if (res.data.people.length > 0) {
-            navigate("/addPlayer/3");
+            console.log("Inside Try block:")
+            console.log(res)
+
+            let userObj;
+            let playerObj = {};
+            let userPlayers;
+            axios.get('http://localhost:8000/api/user/', { withCredentials: true })
+            .then(user => {
+
+              userObj = user;
+
+              // get user players and append new player into it
+              userPlayers = user.data.players;
+              // convert local storage item into json object
+              let theInfo = JSON.parse(localStorage.getItem("playerInfoLocal"));
+              let theStats = JSON.parse(localStorage.getItem("playerStatsLocal"));
+
+              playerObj["playerInfo"] = theInfo ;
+              playerObj["playerStats"] = theStats;
+
+              userPlayers.push(playerObj)
+
+              let userId = userObj.data._id;
+
+              // put the new players into the user
+              axios.put(`http://localhost:8000/api/user/${userId}/update`, {
+                players: userPlayers
+              }, { withCredentials: true })
+              .then(response => {
+                console.log("Player added! Now returning the server response")
+                console.log(response)
+                navigate("/players")
+              })
+              .catch(error => {
+                console.log(error);
+                setAlert(["Please wait a minute before adding or removing a Player"]);
+                navigate("/players")
+              })
+            });
           }
         } catch {
           // the data returned by the API is empty so we redirect to playerNotAvailable page

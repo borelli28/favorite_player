@@ -12,7 +12,7 @@ export default () => {
 
   const redirectPlayers = () => {
     // console.log("redirect to favorite players");
-    navigate("/favorite_players");
+    navigate("/players");
   }
 
   const logout = () => {
