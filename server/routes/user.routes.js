@@ -5,9 +5,10 @@ const rateLimiter = require('express-rate-limit');
 // allowed application to access env folder - environment variables(secret variables)
 require('dotenv').config();
 
+// limits API requests to: 10 requests per minute
 const playerRateLimiter = rateLimiter({
   windowMS: 1 * 60 * 1000, // 1 minute
-  max: 10, // Limit each IP to 10 request per windowMS
+  max: 1, // Limit each IP to 10 request per windowMS
   // onLimitReached: function(req, res) {
   //   console.log("Limit Reached!")
   // }

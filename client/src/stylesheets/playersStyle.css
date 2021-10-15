@@ -6,3 +6,20 @@
   border: 1px solid #41748D;
   color: #00A3E0;
 }
+
+#rate-limit-alert {
+  display: flex;
+  justify-content: center;
+}
+
+#rate-alert-container {
+  width: 50%;
+}
+
+#rate-limit-alert label {
+  color: red;
+}
+
+#rate-limit-alert button {
+  margin-left: 5%;
+}

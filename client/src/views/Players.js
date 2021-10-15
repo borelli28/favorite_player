@@ -69,17 +69,17 @@ export default props => {
   return (
     <div>
       <Nav />
-      <div id="submission-alerts">
+      <div id="rate-limit-alert">
       {
         (alert
           ? alert.map((alert, idx) => {
             return (
               // need to wrap alerts in a div else when trying to submit a new message after closing the alert will throw:
               // Failed to execute 'removeChild' on 'Node'. Error
-              <div id="failed-alert-container">
-                <div className="alert alert-warning alert-dismissible fade show" role="alert">
+              <div id="rate-alert-container">
+                <div className="alert alert-light alert-dismissible fade show" role="alert">
                   <label key={idx}>{ alert }</label>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={clearAlert}>X</button>
+                  <button type="button" class="btn-close btn-danger" data-bs-dismiss="alert" aria-label="Close" onClick={clearAlert}>X</button>
                 </div>
               </div>
             )
