@@ -32,23 +32,23 @@ export default props => {
     .then(user => {
       setUserLogged(user.data)
 
+      // iterate trough each player and get each player id and then request fresh data from the API
       for (let i in user.data.players) {
         let playerId = user.data.players[i].playerInfo.id;
 
         // now get fresh stats data from the API, and PUT them in the user players object
         axios.get(`https://statsapi.mlb.com/api/v1/people/${playerId}?hydrate=currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)&site=en`)
         .then(res => {
-          // console.log("API response: ")
-          // console.log(res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1])
           user.data.players[i].playerStats = res.data.people[0].stats[0].splits[res.data.people[0].stats[0].splits.length -1];
           setPlayers(user.data.players);
         })
         .catch(error => {
           console.log(error)
-          console.log(error.response.status);
           if (error.response.status == 401) {
-            navigate('/')
+            navigate('/home')
             window.location.reload();
+          } else {
+            navigate('/home')
           }
         })
       }
